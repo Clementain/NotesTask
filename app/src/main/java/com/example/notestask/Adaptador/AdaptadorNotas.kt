@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.notestask.Entidades.Notas
 import com.example.notestask.R
+import kotlinx.android.synthetic.main.f_vista_notas.view.*
 
 class AdaptarNotas : RecyclerView.Adapter<AdaptarNotas.NotesViewHolder>() {
     var listener: OnItemClickListener? = null
@@ -33,7 +34,7 @@ class AdaptarNotas : RecyclerView.Adapter<AdaptarNotas.NotesViewHolder>() {
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
 
         holder.itemView.Titulo.text = arrList[position].titulo
-        holder.itemView.Descripcion.text = arrList[position].descripcion
+        holder.itemView.Desc.text = arrList[position].descripcion
         holder.itemView.Fecha.text = arrList[position].fecha
 
 

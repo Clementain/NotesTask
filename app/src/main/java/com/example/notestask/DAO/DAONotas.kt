@@ -18,5 +18,8 @@ interface DAONotas {
     @Query("DELETE FROM notes WHERE id =:id")
     suspend fun borrarNota(id: Int)
 
+    @Update
+    suspend fun actualizarNota(note: Notas)
+
 
 }
