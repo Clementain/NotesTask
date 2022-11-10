@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Notes&amp;Task</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notas_tareas">Notas y Tareas</string>
+    <string name="Buscar">Buscar</string>
+    <string name="titulo">Titulo</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="fecha">Fecha</string>
+    <string name="cNota">CNOTA</string>
+    <string name="ctitulo">Titulo</string>
+</resources>

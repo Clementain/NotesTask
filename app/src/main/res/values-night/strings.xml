@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notas_tareas">Notas y Tareas</string>
+    <string name="Buscar">Buscar</string>
+    <string name="titulo">Titulo</string>
+    <string name="descripcion">Descripcion</string>
+    <string name="fecha">Fecha</string>
+    <string name="cNota">CNOTA</string>
+    <string name="ctitulo">Titulo</string>
+</resources>

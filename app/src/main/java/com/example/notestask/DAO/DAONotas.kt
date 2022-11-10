@@ -1,0 +1,22 @@
+package com.example.notestask.DAO
+
+import androidx.room.*
+import com.example.notestask.Entidades.Notas
+
+@Dao
+interface DAONotas {
+
+    @Query("SELECT * FROM notes ORDER BY id DESC")
+    suspend fun obtenerTodasNotas(): List<Notas>
+
+    @Query("SELECT * FROM notes WHERE id =:id")
+    suspend fun obtenerNota(id: Int): Notas
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertarNota(note: Notas)
+
+    @Query("DELETE FROM notes WHERE id =:id")
+    suspend fun borrarNota(id: Int)
+
+
+}
