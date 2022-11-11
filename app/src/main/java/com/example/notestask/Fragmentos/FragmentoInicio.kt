@@ -1,4 +1,4 @@
-package com.example.notestask.Fragmentos
+package com.example.notestask
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Notas
-import com.example.notestask.R
-import com.example.notetask.Adaptador.AdaptarNotas
+import com.example.notestask.Fragmentos.FragmentoBase
+import com.example.notestask.Fragmentos.Fragmentocrearnotas
+import com.example.notetask.Adaptador.AdaptadorNotas
 import kotlinx.android.synthetic.main.fragmento_inicio.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 class FragmentoInicio : FragmentoBase() {
-    var notasArr = ArrayList<Notas>()
-    var adaptadorNotas: AdaptarNotas = AdaptarNotas()
+
+    var arrNotes = ArrayList<Notas>()
+    var adaptarNotas: AdaptadorNotas = AdaptadorNotas()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {}
@@ -27,6 +29,7 @@ class FragmentoInicio : FragmentoBase() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragmento_inicio, container, false)
+
     }
 
     companion object {
@@ -38,54 +41,72 @@ class FragmentoInicio : FragmentoBase() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         recyclerView.setHasFixedSize(true)
+
         recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         launch {
             context?.let {
-                var notas = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerTodasNotas()
-                adaptadorNotas.setData(notas)
-                notasArr = notas as ArrayList<Notas>
-                recyclerView.adapter = adaptadorNotas
+                var notes = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerTodasNotas()
+                adaptarNotas.setData(notes)
+                arrNotes = notes as ArrayList<Notas>
+                recyclerView.adapter = adaptarNotas
             }
         }
-        adaptadorNotas.setOnClickListener(onClicked)
+
+        adaptarNotas.setOnClickListener(onClicked)
+
         fabBtnCreateNote.setOnClickListener {
             replaceFragment(Fragmentocrearnotas.newInstance(), false)
         }
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
                 return true
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
+
                 var tempArr = ArrayList<Notas>()
-                for (arr in notasArr) {
+
+                for (arr in arrNotes) {
                     if (arr.titulo!!.toLowerCase(Locale.getDefault()).contains(p0.toString())) {
                         tempArr.add(arr)
                     }
                 }
-                adaptadorNotas.setData(tempArr)
-                adaptadorNotas.notifyDataSetChanged()
+
+                adaptarNotas.setData(tempArr)
+                adaptarNotas.notifyDataSetChanged()
                 return true
             }
+
         })
+
+
     }
 
-    private val onClicked = object : AdaptarNotas.OnItemClickListener {
-        override fun onClicked(noteId: Int) {
+
+    private val onClicked = object : AdaptadorNotas.OnItemClickListener {
+        override fun onClicked(notesId: Int) {
+
+
             var fragment: Fragment
             var bundle = Bundle()
-            bundle.putInt("idNota", noteId)
+            bundle.putInt("noteId", notesId)
             fragment = Fragmentocrearnotas.newInstance()
             fragment.arguments = bundle
+
             replaceFragment(fragment, false)
         }
+
     }
+
 
     fun replaceFragment(fragment: Fragment, istransition: Boolean) {
         val fragmentTransition = activity!!.supportFragmentManager.beginTransaction()
+
         if (istransition) {
             fragmentTransition.setCustomAnimations(
                 android.R.anim.slide_out_right, android.R.anim.slide_in_left
@@ -94,5 +115,6 @@ class FragmentoInicio : FragmentoBase() {
         fragmentTransition.replace(R.id.frame_layout, fragment)
             .addToBackStack(fragment.javaClass.simpleName).commit()
     }
+
 
 }

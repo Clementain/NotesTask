@@ -9,7 +9,7 @@ import com.example.notestask.Entidades.Notas
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.f_vista_notas.view.*
 
-class AdaptarNotas : RecyclerView.Adapter<AdaptarNotas.NotesViewHolder>() {
+class AdaptadorNotas : RecyclerView.Adapter<AdaptadorNotas.NotesViewHolder>() {
     var listener: OnItemClickListener? = null
     var arrList = ArrayList<Notas>()
     lateinit var titulo: TextView

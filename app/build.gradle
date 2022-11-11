@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.codingwithme.notesapp"
+        applicationId "com.example.notestask"
         minSdkVersion 22
         targetSdkVersion 33
         versionCode 1

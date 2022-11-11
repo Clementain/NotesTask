@@ -3,7 +3,7 @@ package com.example.notestask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.notestask.Fragmentos.FragmentoInicio
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +11,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         replaceFragment(FragmentoInicio.newInstance(), false)
+
     }
+
 
     fun replaceFragment(fragment: Fragment, istransition: Boolean) {
         val fragmentTransition = supportFragmentManager.beginTransaction()
@@ -25,4 +27,11 @@ class MainActivity : AppCompatActivity() {
             .addToBackStack(fragment.javaClass.simpleName).commit()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val fragments = supportFragmentManager.fragments
+        if (fragments.size == 0) {
+            finish()
+        }
+    }
 }
