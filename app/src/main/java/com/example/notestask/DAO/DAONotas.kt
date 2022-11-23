@@ -15,8 +15,11 @@ interface DAONotas {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarNota(note: Notas)
 
+    @Delete
+    suspend fun borrarNota(note: Notas)
+
     @Query("DELETE FROM notes WHERE id =:id")
-    suspend fun borrarNota(id: Int)
+    suspend fun borrarUnaNota(id: Int)
 
     @Update
     suspend fun actualizarNota(note: Notas)

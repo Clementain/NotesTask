@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Notas
 import com.example.notestask.Fragmentos.FragmentoBase
-import com.example.notestask.Fragmentos.Fragmentocrearnotas
+import com.example.notestask.Fragmentos.FragmentoCrearNotas
 import com.example.notetask.Adaptador.AdaptadorNotas
 import kotlinx.android.synthetic.main.fragmento_inicio.*
 import kotlinx.coroutines.launch
@@ -59,7 +59,7 @@ class FragmentoInicio : FragmentoBase() {
         adaptarNotas.setOnClickListener(onClicked)
 
         fabBtnCreateNote.setOnClickListener {
-            replaceFragment(Fragmentocrearnotas.newInstance(), false)
+            replaceFragment(FragmentoCrearNotas.newInstance(), false)
         }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -95,7 +95,7 @@ class FragmentoInicio : FragmentoBase() {
             var fragment: Fragment
             var bundle = Bundle()
             bundle.putInt("noteId", notesId)
-            fragment = Fragmentocrearnotas.newInstance()
+            fragment = FragmentoCrearNotas.newInstance()
             fragment.arguments = bundle
 
             replaceFragment(fragment, false)

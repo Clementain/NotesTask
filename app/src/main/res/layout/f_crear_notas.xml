@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="26dp"
-        android:layout_marginBottom="13dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable"
@@ -44,14 +43,14 @@
         android:inputType="text"
         android:maxLines="1"
         android:padding="10dp"
-        android:text="@string/ctitulo"
+
         android:textColor="@color/white"
         android:textColorHint="@color/Gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAtras"
-        tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+        tools:ignore="TouchTargetSizeCheck,TextContrastCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/cFecha"
@@ -64,7 +63,7 @@
         android:fontFamily="@font/roboto"
         android:maxLines="1"
         android:paddingStart="13dp"
-        android:text="@string/cNota"
+
         android:textColor="@color/Gray"
         android:textColorHint="@color/Gray"
         android:textSize="10.4sp"
@@ -92,5 +91,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cFecha"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <ImageView
+        android:id="@+id/btnBorrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="4dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/cTitulo"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuardar"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
