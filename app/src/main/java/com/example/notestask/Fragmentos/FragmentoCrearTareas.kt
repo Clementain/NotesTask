@@ -12,28 +12,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.notestask.BaseDatos.BaseDatosNotas
-import com.example.notestask.Entidades.Notas
+import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
-import kotlinx.android.synthetic.main.f_crear_notas.*
+import kotlinx.android.synthetic.main.f_crear_tareas.*
+import kotlinx.android.synthetic.main.f_vista_tareas.*
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentoCrearNotas : FragmentoBase(), EasyPermissions.PermissionCallbacks,
+class FragmentoCrearTareas : FragmentoBase(), EasyPermissions.PermissionCallbacks,
     EasyPermissions.RationaleCallbacks {
 
     var currentDate: String? = null
     private var READ_STORAGE_PERM = 123
     private var REQUEST_CODE_IMAGE = 456
     private var selectedImagePath = ""
-    private var noteId = -1
+    private var taskId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        noteId = requireArguments().getInt("noteId", -1)
+        taskId = requireArguments().getInt("taskId", -1)
 
     }
 
@@ -42,12 +43,12 @@ class FragmentoCrearNotas : FragmentoBase(), EasyPermissions.PermissionCallbacks
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.f_crear_notas, container, false)
+        return inflater.inflate(R.layout.f_crear_tareas, container, false)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = FragmentoCrearNotas().apply {
+        fun newInstance() = FragmentoCrearTareas().apply {
             arguments = Bundle().apply {}
         }
     }
@@ -56,13 +57,14 @@ class FragmentoCrearNotas : FragmentoBase(), EasyPermissions.PermissionCallbacks
         super.onViewCreated(view, savedInstanceState)
 
 
-        if (noteId != -1) {
+        if (taskId != -1) {
 
             launch {
                 context?.let {
-                    var notas = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerNota(noteId)
-                    cTitulo.setText(notas.titulo)
-                    cDesc.setText(notas.descripcion)
+                    var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
+                    cTituloT.setText(tareas.tituloT)
+                    cDescT.setText(tareas.descripcionT)
+                   // fechaCumplir.setText(tareas.fechaCumplirT)
 
                 }
             }
@@ -73,71 +75,74 @@ class FragmentoCrearNotas : FragmentoBase(), EasyPermissions.PermissionCallbacks
 
         currentDate = sdf.format(Date())
 
-        cFecha.text = currentDate
+        cFechaT.text = currentDate
 
-        btnGuardar.setOnClickListener {
-            if (noteId != -1) {
-                actualizarNota()
+        btnGuardarT.setOnClickListener {
+            if (taskId != -1) {
+                actualizarTarea()
             } else {
-                guardarNota()
+                guardarTarea()
             }
         }
 
-        btnBorrar.setOnClickListener {
-            if (noteId != -1) {
-                borrarNota()
+        btnBorrarT.setOnClickListener {
+            if (taskId != -1) {
+                borrarTarea()
             } else {
-                Toast.makeText(requireContext(), "Primero guarda la nota", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Primero guarda la tarea", Toast.LENGTH_SHORT)
                     .show()
             }
         }
 
-        btnAtras.setOnClickListener {
+        btnAtrasT.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
     }
 
 
-    private fun actualizarNota() {
+    private fun actualizarTarea() {
         launch {
 
             context?.let {
-                var notes = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerNota(noteId)
+                var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
 
-                notes.titulo = cTitulo.text.toString()
-                notes.descripcion = cDesc.text.toString()
-                notes.fecha = currentDate
+                tareas.tituloT = cTituloT.text.toString()
+                tareas.descripcionT = cDescT.text.toString()
+                tareas.fechaT = currentDate
+             //   tareas.fechaCumplirT=fechaCumplir.text.toString()
 
-                BaseDatosNotas.getBaseDatos(it).dAONotas().actualizarNota(notes)
-                cTitulo.setText("")
-                cDesc.setText("")
+                BaseDatosNotas.getBaseDatos(it).dAOTareas().actualizarTarea(tareas)
+                cTituloT.setText("")
+                cDescT.setText("")
+                fechaCumplir.setText("")
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
 
-    private fun guardarNota() {
+    private fun guardarTarea() {
 
         launch {
-            var notes = Notas()
-            notes.titulo = cTitulo.text.toString()
-            notes.descripcion = cDesc.text.toString()
-            notes.fecha = currentDate
+            var tareas = Tareas()
+            tareas.tituloT = cTituloT.text.toString()
+            tareas.descripcionT = cDescT.text.toString()
+            tareas.fechaT = currentDate
+           // tareas.fechaCumplirT=fechaCumplir.text.toString()
             context?.let {
-                BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
-                cTitulo.setText("")
-                cDesc.setText("")
+                BaseDatosNotas.getBaseDatos(it).dAOTareas().insertarTarea(tareas)
+                cTituloT.setText("")
+                cDescT.setText("")
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
 
-    private fun borrarNota() {
+    private fun borrarTarea() {
 
         launch {
             context?.let {
-                BaseDatosNotas.getBaseDatos(it).dAONotas().borrarUnaNota(noteId)
+                BaseDatosNotas.getBaseDatos(it).dAOTareas().borrarUnaTarea(taskId)
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }

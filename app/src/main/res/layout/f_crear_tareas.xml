@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/btnAtras"
+        android:id="@+id/btnAtrasT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
@@ -19,7 +19,7 @@
         app:tint="@color/white" />
 
     <ImageView
-        android:id="@+id/btnGuardar"
+        android:id="@+id/btnGuardarT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -32,29 +32,31 @@
         tools:ignore="ImageContrastCheck" />
 
     <EditText
-        android:id="@+id/cTitulo"
+        android:id="@+id/cTituloT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:layout_marginTop="116dp"
         android:autofillHints=""
         android:background="@null"
         android:ellipsize="end"
         android:fontFamily="@font/roboto"
         android:hint="Titulo"
+
         android:inputType="text"
         android:maxLines="1"
-
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/Gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.368"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAtras"
+        app:layout_constraintTop_toBottomOf="@+id/btnAtrasT"
         tools:ignore="TouchTargetSizeCheck,TextContrastCheck,SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/cFecha"
+        android:id="@+id/cFechaT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
@@ -70,11 +72,20 @@
         android:textSize="10.4sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cTitulo"
+        app:layout_constraintTop_toBottomOf="@+id/cTituloT"
         tools:ignore="TextContrastCheck" />
 
+    <TextView
+        android:id="@+id/FechaCumplir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cDescT" />
+
     <EditText
-        android:id="@+id/cDesc"
+        android:id="@+id/cDescT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -91,18 +102,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cFecha"
+        app:layout_constraintTop_toBottomOf="@+id/cFechaT"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <ImageView
-        android:id="@+id/btnBorrar"
+        android:id="@+id/btnBorrarT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="4dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/cTitulo"
-        app:layout_constraintEnd_toStartOf="@+id/btnGuardar"
+        app:layout_constraintBottom_toTopOf="@+id/cTituloT"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuardarT"
         app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    <ImageView
+        android:id="@+id/btnFechaRecordar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/cTituloT"
+        app:layout_constraintEnd_toStartOf="@+id/btnBorrarT"
+        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

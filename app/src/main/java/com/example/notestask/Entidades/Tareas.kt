@@ -5,34 +5,37 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "Notes")
-class Notas : Serializable {
+@Entity(tableName = "Tasks")
+class Tareas : Serializable {
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    var idT: Int? = null
 
     @ColumnInfo(name = "titulo")
-    var titulo: String? = null
+    var tituloT: String? = null
 
     @ColumnInfo(name = "fecha")
-    var fecha: String? = null
+    var fechaT: String? = null
+
+    @ColumnInfo(name = "fechaCumplir")
+    var fechaCumplirT: String? = null
 
     @ColumnInfo(name = "descripcion")
-    var descripcion: String? = null
+    var descripcionT: String? = null
 
     @ColumnInfo(name = "imagen")
-    var imagen: String? = null
+    var imagenT: String? = null
 
     @ColumnInfo(name = "video")
-    var video: String? = null
+    var videoT: String? = null
 
     @ColumnInfo(name = "audio")
-    var audio: String? = null
+    var audioT: String? = null
 
 
     override fun toString(): String {
 
-        return "$titulo : $fecha"
+        return "$tituloT : $fechaT"
 
     }
 }
