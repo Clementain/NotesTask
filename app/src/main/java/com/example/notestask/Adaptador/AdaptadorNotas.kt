@@ -1,4 +1,4 @@
-package com.example.notetask.Adaptador
+package com.example.notestask.Adaptador
 
 import android.view.LayoutInflater
 import android.view.View
