@@ -20,14 +20,6 @@ class Notas : Serializable {
     @ColumnInfo(name = "descripcion")
     var descripcion: String? = null
 
-    @ColumnInfo(name = "imagen")
-    var imagen: String? = null
-
-    @ColumnInfo(name = "video")
-    var video: String? = null
-
-    @ColumnInfo(name = "audio")
-    var audio: String? = null
 
 
     override fun toString(): String {

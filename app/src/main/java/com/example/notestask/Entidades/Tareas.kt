@@ -23,15 +23,6 @@ class Tareas : Serializable {
     @ColumnInfo(name = "descripcion")
     var descripcionT: String? = null
 
-    @ColumnInfo(name = "imagen")
-    var imagenT: String? = null
-
-    @ColumnInfo(name = "video")
-    var videoT: String? = null
-
-    @ColumnInfo(name = "audio")
-    var audioT: String? = null
-
 
     override fun toString(): String {
 
