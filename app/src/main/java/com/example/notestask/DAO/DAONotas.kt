@@ -11,8 +11,9 @@ interface DAONotas {
 
     @Query("SELECT * FROM notes WHERE id =:id")
     suspend fun obtenerNota(id: Int): Notas
+
     @Query("SELECT MAX(id) FROM NOTES")
-    suspend fun obtenerId():Int?
+    suspend fun obtenerId(): Int?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarNota(note: Notas)

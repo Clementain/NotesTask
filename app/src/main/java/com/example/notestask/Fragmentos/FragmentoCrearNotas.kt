@@ -20,15 +20,14 @@ import java.util.*
 class FragmentoCrearNotas : FragmentoBase() {
 
     var currentDate: String? = null
-    private val SELECT_ACTIVITY=50
-    private var urImagen: Uri?=null
+    private val SELECT_ACTIVITY = 50
+    private var urImagen: Uri? = null
     private var noteId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         noteId = requireArguments().getInt("noteId", -1)
-
 
 
     }
@@ -59,7 +58,7 @@ class FragmentoCrearNotas : FragmentoBase() {
                     var notas = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerNota(noteId)
                     cTitulo.setText(notas.titulo)
                     cDesc.setText(notas.descripcion)
-                    val urimagen=ImageControler.getImageUri(super.requireContext(),"N$noteId")
+                    val urimagen = ImageControler.getImageUri(super.requireContext(), "N$noteId")
                     mostrarFoto.setImageURI(urimagen)
                 }
             }
@@ -91,7 +90,7 @@ class FragmentoCrearNotas : FragmentoBase() {
         }
 
         btnAgregarFoto.setOnClickListener {
-            ImageControler.selectPhotoFromGallery(this,SELECT_ACTIVITY)
+            ImageControler.selectPhotoFromGallery(this, SELECT_ACTIVITY)
         }
 
         btnAtras.setOnClickListener {
@@ -112,8 +111,8 @@ class FragmentoCrearNotas : FragmentoBase() {
                 notes.fecha = currentDate
 
                 BaseDatosNotas.getBaseDatos(it).dAONotas().actualizarNota(notes)
-                urImagen?.let{
-                    ImageControler.saveImage(requireContext(),noteId.toLong(),it,"N")
+                urImagen?.let {
+                    ImageControler.saveImage(requireContext(), noteId.toLong(), it, "N")
                 }
                 cTitulo.setText("")
                 cDesc.setText("")
@@ -131,10 +130,11 @@ class FragmentoCrearNotas : FragmentoBase() {
             notes.descripcion = cDesc.text.toString()
             notes.fecha = currentDate
             context?.let {
-                val id= BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
-             BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
-                urImagen?.let{
-                    ImageControler.saveImage(requireContext(),id!!.toLong()+1,it,"N")
+
+                BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
+                val id = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
+                urImagen?.let {
+                    ImageControler.saveImage(requireContext(), id!!.toLong(), it, "N")
                 }
                 cTitulo.setText("")
                 cDesc.setText("")
@@ -157,9 +157,9 @@ class FragmentoCrearNotas : FragmentoBase() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when{
-            requestCode==SELECT_ACTIVITY&&resultCode==Activity.RESULT_OK->{
-            urImagen=data!!.data
+        when {
+            requestCode == SELECT_ACTIVITY && resultCode == Activity.RESULT_OK -> {
+                urImagen = data!!.data
                 mostrarFoto.setImageURI(urImagen)
             }
         }

@@ -64,7 +64,7 @@ class FragmentoCrearTareas : FragmentoBase(), EasyPermissions.PermissionCallback
                     var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
                     cTituloT.setText(tareas.tituloT)
                     cDescT.setText(tareas.descripcionT)
-                   // fechaCumplir.setText(tareas.fechaCumplirT)
+                    // fechaCumplir.setText(tareas.fechaCumplirT)
 
                 }
             }
@@ -110,12 +110,12 @@ class FragmentoCrearTareas : FragmentoBase(), EasyPermissions.PermissionCallback
                 tareas.tituloT = cTituloT.text.toString()
                 tareas.descripcionT = cDescT.text.toString()
                 tareas.fechaT = currentDate
-             //   tareas.fechaCumplirT=fechaCumplir.text.toString()
+                //   tareas.fechaCumplirT=fechaCumplir.text.toString()
 
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().actualizarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
-                fechaCumplir.setText("")
+                fechaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
@@ -128,7 +128,7 @@ class FragmentoCrearTareas : FragmentoBase(), EasyPermissions.PermissionCallback
             tareas.tituloT = cTituloT.text.toString()
             tareas.descripcionT = cDescT.text.toString()
             tareas.fechaT = currentDate
-           // tareas.fechaCumplirT=fechaCumplir.text.toString()
+            // tareas.fechaCumplirT=fechaCumplir.text.toString()
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().insertarTarea(tareas)
                 cTituloT.setText("")

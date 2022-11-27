@@ -9,7 +9,7 @@ import com.example.notestask.DAO.DAOTareas
 import com.example.notestask.Entidades.Notas
 import com.example.notestask.Entidades.Tareas
 
-@Database(entities = [Notas::class,Tareas::class], version = 1, exportSchema = false)
+@Database(entities = [Notas::class, Tareas::class], version = 1, exportSchema = false)
 abstract class BaseDatosNotas : RoomDatabase() {
 
     companion object {
@@ -27,5 +27,5 @@ abstract class BaseDatosNotas : RoomDatabase() {
     }
 
     abstract fun dAONotas(): DAONotas
-    abstract fun dAOTareas():DAOTareas
+    abstract fun dAOTareas(): DAOTareas
 }

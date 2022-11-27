@@ -13,8 +13,8 @@ object ImageControler {
         activity.startActivityForResult(intent, code)
     }
 
-    fun saveImage(context: Context, id: Long, uri: Uri, tipo:String) {
-        val file = File(context.filesDir, tipo+id.toString())
+    fun saveImage(context: Context, id: Long, uri: Uri, tipo: String) {
+        val file = File(context.filesDir, tipo + id.toString())
 
         val bytes = context.contentResolver.openInputStream(uri)?.readBytes()!!
 

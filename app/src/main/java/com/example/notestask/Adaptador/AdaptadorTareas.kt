@@ -36,7 +36,7 @@ class AdaptadorTareas : RecyclerView.Adapter<AdaptadorTareas.TasksViewHolder>() 
         holder.itemView.TituloT.text = arrList[position].tituloT
         holder.itemView.DescT.text = arrList[position].descripcionT
         holder.itemView.FechaT.text = arrList[position].fechaT
-        holder.itemView.fechaCumplir.text=arrList[position].fechaCumplirT
+        holder.itemView.fechaCumplir.text = arrList[position].fechaCumplirT
 
 
         holder.itemView.cardViewT.setOnClickListener {

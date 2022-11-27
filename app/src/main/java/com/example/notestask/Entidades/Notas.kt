@@ -21,7 +21,6 @@ class Notas : Serializable {
     var descripcion: String? = null
 
 
-
     override fun toString(): String {
 
         return "$titulo : $fecha"
