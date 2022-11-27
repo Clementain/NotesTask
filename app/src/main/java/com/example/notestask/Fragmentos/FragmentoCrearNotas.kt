@@ -113,7 +113,7 @@ class FragmentoCrearNotas : FragmentoBase() {
 
                 BaseDatosNotas.getBaseDatos(it).dAONotas().actualizarNota(notes)
                 urImagen?.let{
-                    ImageControler.saveImage(super.requireContext(),noteId.toLong(),it,"N")
+                    ImageControler.saveImage(requireContext(),noteId.toLong(),it,"N")
                 }
                 cTitulo.setText("")
                 cDesc.setText("")
@@ -134,7 +134,7 @@ class FragmentoCrearNotas : FragmentoBase() {
                 val id= BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
              BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
                 urImagen?.let{
-                    ImageControler.saveImage(super.requireContext(),id!!.toLong()+1,it,"N")
+                    ImageControler.saveImage(requireContext(),id!!.toLong()+1,it,"N")
                 }
                 cTitulo.setText("")
                 cDesc.setText("")
