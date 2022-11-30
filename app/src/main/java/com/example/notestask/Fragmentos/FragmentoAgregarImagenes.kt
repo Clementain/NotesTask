@@ -48,11 +48,10 @@ class FragmentoAgregarImagenes : FragmentoBase() {
         super.onViewCreated(view, savedInstanceState)
 
         btnAgregarFotoCN.setOnClickListener {
-            //   ImageControler.selectPhotoFromGallery(this, SELECT_ACTIVITY)
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            //this.startActivityForResult(intent, SELECT_ACTIVITY)
-            intent.also { pickPictureIntent ->
+
+            Intent(
+                Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI
+            ).also { pickPictureIntent ->
                 pickPictureIntent.resolveActivity(requireActivity().packageManager).also {
                     val imageFile: File? = try {
                         createImageFile()
