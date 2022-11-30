@@ -54,7 +54,7 @@ private var idN=-1
 private fun guardarImagen(){
     launch {
         var imgs=Imagenes()
-        imgs.uri=urImagen
+        imgs.uri= Uri.parse(urImagen.toString()).toString()
         imgs.tipo=tipoCN.text.toString()
         imgs.idNFK=idN
         context?.let {

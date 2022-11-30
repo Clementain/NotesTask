@@ -1,5 +1,6 @@
 package com.example.notestask.Adaptador
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +39,7 @@ class AdaptadorImagenes : RecyclerView.Adapter<AdaptadorImagenes.ImagesViewHolde
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
-        holder.itemView.imageViewN.setImageURI(arrimagenes[position].uri)
+        holder.itemView.imageViewN.setImageURI(Uri.parse(arrimagenes[position].uri))
         holder.itemView.idImagen.text = arrimagenes[position].idImg.toString()
         holder.itemView.idNota.text = arrimagenes[position].idNFK.toString()
         holder.itemView.idTipoN.text = arrimagenes[position].tipo

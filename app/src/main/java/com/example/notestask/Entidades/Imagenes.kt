@@ -18,7 +18,7 @@ class Imagenes : Serializable {
     var tipo: String? = null
 
     @ColumnInfo(name = "uri")
-    var uri: Uri? = null
+    var uri: String? = null
 
 
 }
