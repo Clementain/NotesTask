@@ -34,10 +34,10 @@
             android:layout_height="wrap_content"
             tools:visibility="gone" />
 
-        <TextView
+        <ImageView
             android:id="@+id/imageViewN"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:textSize="20sp" />
+            tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>
