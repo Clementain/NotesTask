@@ -1,13 +1,12 @@
 package com.example.notestask.Fragmentos
 
-import android.app.Activity
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.notestask.Adaptador.ImageControler
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Notas
@@ -20,7 +19,6 @@ import java.util.*
 class FragmentoCrearNotas : FragmentoBase() {
 
     var currentDate: String? = null
-    private val SELECT_ACTIVITY = 50
     private var urImagen: Uri? = null
     private var noteId = -1
 
@@ -58,8 +56,7 @@ class FragmentoCrearNotas : FragmentoBase() {
                     var notas = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerNota(noteId)
                     cTitulo.setText(notas.titulo)
                     cDesc.setText(notas.descripcion)
-                    val urimagen = ImageControler.getImageUri(super.requireContext(), "N$noteId")
-                    mostrarFoto.setImageURI(urimagen)
+
                 }
             }
         }
@@ -90,7 +87,29 @@ class FragmentoCrearNotas : FragmentoBase() {
         }
 
         btnAgregarFoto.setOnClickListener {
-            ImageControler.selectPhotoFromGallery(this, SELECT_ACTIVITY)
+            var fragment: Fragment
+            var bundle = Bundle()
+            if (noteId != -1) {
+                bundle.putInt("idN", noteId)
+
+            } else {
+                launch {
+                    context?.let {
+                        val id = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
+                        if (id == null) {
+                            bundle.putInt("idN", 1)
+                        } else {
+                            bundle.putInt("idN", id + 1)
+                        }
+
+                    }
+                }
+            }
+            fragment = FragmentoMultimedia.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
+
+
         }
 
         btnAtras.setOnClickListener {
@@ -99,6 +118,17 @@ class FragmentoCrearNotas : FragmentoBase() {
 
     }
 
+    fun replaceFragment(fragment: Fragment, itstransition: Boolean) {
+        val fragmentTransition = activity!!.supportFragmentManager.beginTransaction()
+        if (itstransition) {
+            fragmentTransition.setCustomAnimations(
+                android.R.anim.slide_out_right, android.R.anim.slide_in_left
+            )
+        }
+        fragmentTransition.replace(R.id.frame_layout, fragment)
+            .addToBackStack(fragment.javaClass.simpleName).commit()
+
+    }
 
     private fun actualizarNota() {
         launch {
@@ -155,14 +185,6 @@ class FragmentoCrearNotas : FragmentoBase() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when {
-            requestCode == SELECT_ACTIVITY && resultCode == Activity.RESULT_OK -> {
-                urImagen = data!!.data
-                mostrarFoto.setImageURI(urImagen)
-            }
-        }
-    }
+
 }
 

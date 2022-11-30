@@ -4,12 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.notestask.DAO.DAOImagenes
 import com.example.notestask.DAO.DAONotas
 import com.example.notestask.DAO.DAOTareas
+import com.example.notestask.Entidades.Imagenes
 import com.example.notestask.Entidades.Notas
 import com.example.notestask.Entidades.Tareas
 
-@Database(entities = [Notas::class, Tareas::class], version = 1, exportSchema = false)
+@Database(entities = [Notas::class, Tareas::class,Imagenes::class], version = 1, exportSchema = false)
 abstract class BaseDatosNotas : RoomDatabase() {
 
     companion object {
@@ -28,4 +30,5 @@ abstract class BaseDatosNotas : RoomDatabase() {
 
     abstract fun dAONotas(): DAONotas
     abstract fun dAOTareas(): DAOTareas
+    abstract fun dAOImagenes():DAOImagenes
 }

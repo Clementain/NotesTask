@@ -3,11 +3,11 @@ package com.example.notestask.Adaptador
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.example.notestask.Fragmentos.FragmentoCrearNotas
+import com.example.notestask.Fragmentos.FragmentoAgregarImagenes
 import java.io.File
 
 object ImageControler {
-    fun selectPhotoFromGallery(activity: FragmentoCrearNotas, code: Int) {
+    fun selectPhotoFromGallery(activity: FragmentoAgregarImagenes, code: Int) {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         activity.startActivityForResult(intent, code)
