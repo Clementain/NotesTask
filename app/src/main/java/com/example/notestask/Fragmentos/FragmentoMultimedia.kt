@@ -7,15 +7,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notestask.Adaptador.AdaptadorImagenes
+import com.example.notestask.Adaptador.AdaptadorVideos
 import com.example.notestask.BaseDatos.BaseDatosNotas
-import com.example.notestask.Entidades.Imagenes
+import com.example.notestask.Entidades.Multimedias
+import com.example.notestask.Entidades.Videos
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.fragmento_multimedia.*
 import kotlinx.coroutines.launch
 
 class FragmentoMultimedia : FragmentoBase() {
-    var arrlistImagenes = ArrayList<Imagenes>()
+    var arrlistImagenes = ArrayList<Multimedias>()
+    var arrlistVideos= ArrayList<Videos>()
     var adaptadorimagen: AdaptadorImagenes = AdaptadorImagenes()
+    var adaptadorvideo: AdaptadorVideos=AdaptadorVideos()
     private var idN = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,13 +47,21 @@ class FragmentoMultimedia : FragmentoBase() {
         rvMultimedia.setHasFixedSize(true)
         rvMultimedia.layoutManager =
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        rvVideos.setHasFixedSize(true)
+        rvMultimedia.layoutManager =
+            StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         launch {
             context?.let {
-                var imgs = BaseDatosNotas.getBaseDatos(it).dAOImagenes().obtenerImagenes(idN)
+                var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerMultimedias(idN)
                 adaptadorimagen.setData(imgs)
-                arrlistImagenes = imgs as ArrayList<Imagenes>
+                arrlistImagenes = imgs as ArrayList<Multimedias>
                 rvMultimedia.adapter = adaptadorimagen
 
+                var vids= BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenerVideos(idN)
+                adaptadorvideo.setData(vids)
+                arrlistVideos= vids as ArrayList<Videos>
+                rvVideos.adapter=adaptadorvideo
             }
         }
         fabBtnAddM.setOnClickListener {
@@ -60,6 +72,14 @@ class FragmentoMultimedia : FragmentoBase() {
             fragment.arguments = bundle
             replaceFragment(fragment, false)
 
+        }
+        fabBtnAddMV.setOnClickListener{
+            var fragment:Fragment
+            var bundle= Bundle()
+            bundle.putInt("idN", idN)
+            fragment= FragmentoAgregarVideos.newInstance()
+            fragment.arguments=bundle
+            replaceFragment(fragment,false)
         }
     }
 

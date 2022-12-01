@@ -47,6 +47,11 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvVideos"
+                    android:layout_width="238dp"
+                    android:layout_height="match_parent" />
+
             </LinearLayout>
         </ScrollView>
 
@@ -63,6 +68,19 @@
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabBtnAddMV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/purple_700"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fabBtnAddM"
         tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

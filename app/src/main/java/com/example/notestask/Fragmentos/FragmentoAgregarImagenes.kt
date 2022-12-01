@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.FileProvider
 import com.example.notestask.BaseDatos.BaseDatosNotas
-import com.example.notestask.Entidades.Imagenes
+import com.example.notestask.Entidades.Multimedias
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.f_agregar_imagenes.*
 import kotlinx.coroutines.launch
@@ -101,12 +101,12 @@ class FragmentoAgregarImagenes : FragmentoBase() {
 
     private fun guardarImagen() {
         launch {
-            var imgs = Imagenes()
+            var imgs = Multimedias()
             imgs.uri = urImagen.toString()
             imgs.tipo = tipoCN.text.toString()
             imgs.idNFK = idN
             context?.let {
-                BaseDatosNotas.getBaseDatos(it).dAOImagenes().insertarImagen(imgs)
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().insertarMultimedia(imgs)
                 requireActivity().supportFragmentManager.popBackStack()
 
             }

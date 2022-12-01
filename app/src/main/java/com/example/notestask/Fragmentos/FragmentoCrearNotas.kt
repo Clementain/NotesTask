@@ -180,7 +180,7 @@ class FragmentoCrearNotas : FragmentoBase() {
         launch {
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAONotas().borrarUnaNota(noteId)
-                BaseDatosNotas.getBaseDatos(it).dAOImagenes().borrarUnaImagen(noteId)
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(noteId)
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
