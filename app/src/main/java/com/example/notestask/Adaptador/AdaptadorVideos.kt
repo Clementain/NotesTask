@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.f_vista_videos.view.*
 class AdaptadorVideos : RecyclerView.Adapter<AdaptadorVideos.VideosViewHolder>() {
     class VideosViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    var arrvideos = ArrayList<Videos>()
+        var arrvideos = ArrayList<Videos>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideosViewHolder {

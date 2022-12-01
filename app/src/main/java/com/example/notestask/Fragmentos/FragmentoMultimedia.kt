@@ -49,7 +49,7 @@ class FragmentoMultimedia : FragmentoBase() {
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
 
         rvVideos.setHasFixedSize(true)
-        rvMultimedia.layoutManager =
+        rvVideos.layoutManager =
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         launch {
             context?.let {
@@ -62,6 +62,8 @@ class FragmentoMultimedia : FragmentoBase() {
                 adaptadorvideo.setData(vids)
                 arrlistVideos = vids as ArrayList<Videos>
                 rvVideos.adapter = adaptadorvideo
+                adaptadorvideo.notifyDataSetChanged()
+
             }
         }
         fabBtnAddM.setOnClickListener {
