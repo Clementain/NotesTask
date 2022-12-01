@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.f_vista_videos.view.*
 class AdaptadorVideos : RecyclerView.Adapter<AdaptadorVideos.VideosViewHolder>() {
     class VideosViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-
     var arrvideos = ArrayList<Videos>()
 
 
@@ -35,6 +34,9 @@ class AdaptadorVideos : RecyclerView.Adapter<AdaptadorVideos.VideosViewHolder>()
 
     override fun onBindViewHolder(holder: VideosViewHolder, position: Int) {
         holder.itemView.videoViewN.setVideoURI(Uri.parse(arrvideos[position].uri))
+        holder.itemView.videoViewN.setOnClickListener{
+            holder.itemView.videoViewN.start()
+        }
     }
 
 }

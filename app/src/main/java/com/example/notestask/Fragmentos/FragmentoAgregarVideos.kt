@@ -25,7 +25,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        idN = requireArguments().getInt("idN", -1)
+        idN = requireArguments().getInt("idNV", -1)
     }
 
     override fun onCreateView(
@@ -84,7 +84,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
         launch {
             var vids = Videos()
             vids.uri = viUri.toString()
-            vids.tipo = tipoCN.text.toString()
+          //  vids.tipo = tipoCN.text.toString()
             vids.idNFK = idN
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOVideos().insertarVideos(vids)

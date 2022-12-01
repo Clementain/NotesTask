@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 
 class FragmentoMultimedia : FragmentoBase() {
     var arrlistImagenes = ArrayList<Multimedias>()
-    var arrlistVideos= ArrayList<Videos>()
+    var arrlistVideos = ArrayList<Videos>()
     var adaptadorimagen: AdaptadorImagenes = AdaptadorImagenes()
-    var adaptadorvideo: AdaptadorVideos=AdaptadorVideos()
+    var adaptadorvideo: AdaptadorVideos = AdaptadorVideos()
     private var idN = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +58,10 @@ class FragmentoMultimedia : FragmentoBase() {
                 arrlistImagenes = imgs as ArrayList<Multimedias>
                 rvMultimedia.adapter = adaptadorimagen
 
-                var vids= BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenerVideos(idN)
+                var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenerVideos(idN)
                 adaptadorvideo.setData(vids)
-                arrlistVideos= vids as ArrayList<Videos>
-                rvVideos.adapter=adaptadorvideo
+                arrlistVideos = vids as ArrayList<Videos>
+                rvVideos.adapter = adaptadorvideo
             }
         }
         fabBtnAddM.setOnClickListener {
@@ -73,13 +73,13 @@ class FragmentoMultimedia : FragmentoBase() {
             replaceFragment(fragment, false)
 
         }
-        fabBtnAddMV.setOnClickListener{
-            var fragment:Fragment
-            var bundle= Bundle()
-            bundle.putInt("idN", idN)
-            fragment= FragmentoAgregarVideos.newInstance()
-            fragment.arguments=bundle
-            replaceFragment(fragment,false)
+        fabBtnAddMV.setOnClickListener {
+            var fragment: Fragment
+            var bundle = Bundle()
+            bundle.putInt("idNV", idN)
+            fragment = FragmentoAgregarVideos.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
         }
     }
 
@@ -88,8 +88,7 @@ class FragmentoMultimedia : FragmentoBase() {
         val fragmentTransition = activity!!.supportFragmentManager.beginTransaction()
         if (itstransition) {
             fragmentTransition.setCustomAnimations(
-                android.R.anim.slide_out_right,
-                android.R.anim.slide_in_left
+                android.R.anim.slide_out_right, android.R.anim.slide_in_left
             )
         }
         fragmentTransition.replace(R.id.frame_layout, fragment)

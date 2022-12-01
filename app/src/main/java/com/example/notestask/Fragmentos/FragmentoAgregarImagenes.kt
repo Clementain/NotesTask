@@ -53,18 +53,11 @@ class FragmentoAgregarImagenes : FragmentoBase() {
                 Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI
             ).also { pickPictureIntent ->
                 pickPictureIntent.resolveActivity(requireActivity().packageManager).also {
-                    val imageFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        null
-                    }
-                    imageFile?.also {
-                        urImagen = FileProvider.getUriForFile(
-                            requireContext(), "com.example.notestask.fileprovider", it
-                        )
+
+
 
                         startActivityForResult(pickPictureIntent, SELECT_ACTIVITY)
-                    }
+
                 }
             }
 
@@ -137,6 +130,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == SELECT_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            urImagen=data!!.data
             mostrarFotoCN.setImageURI(urImagen)
         } else if (requestCode == TAKE_ACTIVITY && resultCode == Activity.RESULT_OK) {
             mostrarFotoCN.setImageURI(urImagen)
