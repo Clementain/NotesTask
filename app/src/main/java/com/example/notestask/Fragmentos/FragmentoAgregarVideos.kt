@@ -75,6 +75,9 @@ class FragmentoAgregarVideos : FragmentoBase() {
         btnAtrasCNV.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
+        mostrarVideoCN.setOnClickListener{
+            mostrarVideoCN.start()
+        }
     }
 
     private fun guardarVideo() {
