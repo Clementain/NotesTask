@@ -1,5 +1,6 @@
 package com.example.notestask.Fragmentos
 
+import AdaptadorAudios
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notestask.Adaptador.AdaptadorImagenes
 import com.example.notestask.Adaptador.AdaptadorVideos
 import com.example.notestask.BaseDatos.BaseDatosNotas
+import com.example.notestask.Entidades.Audios
 import com.example.notestask.Entidades.Multimedias
 import com.example.notestask.Entidades.Videos
 import com.example.notestask.R
@@ -18,8 +20,11 @@ import kotlinx.coroutines.launch
 class FragmentoMultimedia : FragmentoBase() {
     var arrlistImagenes = ArrayList<Multimedias>()
     var arrlistVideos = ArrayList<Videos>()
+    var arraylistAudio=ArrayList<Audios>()
     var adaptadorimagen: AdaptadorImagenes = AdaptadorImagenes()
     var adaptadorvideo: AdaptadorVideos = AdaptadorVideos()
+    var adaptadoraudios:AdaptadorAudios=AdaptadorAudios()
+
     private var idN = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +56,10 @@ class FragmentoMultimedia : FragmentoBase() {
         rvVideos.setHasFixedSize(true)
         rvVideos.layoutManager =
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+
+        rvAudios.setHasFixedSize(true)
+        rvAudios.layoutManager=StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL)
+
         launch {
             context?.let {
                 var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerMultimedias(idN)
@@ -62,8 +71,11 @@ class FragmentoMultimedia : FragmentoBase() {
                 adaptadorvideo.setData(vids)
                 arrlistVideos = vids as ArrayList<Videos>
                 rvVideos.adapter = adaptadorvideo
-                adaptadorvideo.notifyDataSetChanged()
 
+                var  auds=BaseDatosNotas.getBaseDatos(it).dAOAudios().obtenerAudios(idN)
+                adaptadoraudios.setData(auds)
+                arraylistAudio=auds as ArrayList<Audios>
+                rvAudios.adapter=adaptadoraudios
             }
         }
         fabBtnAddM.setOnClickListener {
@@ -82,6 +94,14 @@ class FragmentoMultimedia : FragmentoBase() {
             fragment = FragmentoAgregarVideos.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
+        }
+        fabtnAddMA.setOnClickListener{
+            var  fragment: Fragment
+            var  bundle=Bundle()
+            bundle.putInt("idNA", idN)
+            fragment=FrgamentoAgregarAudio.newInstance()
+            fragment.arguments=bundle
+            replaceFragment(fragment,false)
         }
     }
 
