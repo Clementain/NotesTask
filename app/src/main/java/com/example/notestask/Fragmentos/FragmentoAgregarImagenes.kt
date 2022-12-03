@@ -55,8 +55,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
                 pickPictureIntent.resolveActivity(requireActivity().packageManager).also {
 
 
-
-                        startActivityForResult(pickPictureIntent, SELECT_ACTIVITY)
+                    startActivityForResult(pickPictureIntent, SELECT_ACTIVITY)
 
                 }
             }
@@ -130,7 +129,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == SELECT_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            urImagen=data!!.data
+            urImagen = data!!.data
             mostrarFotoCN.setImageURI(urImagen)
         } else if (requestCode == TAKE_ACTIVITY && resultCode == Activity.RESULT_OK) {
             mostrarFotoCN.setImageURI(urImagen)

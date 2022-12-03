@@ -19,12 +19,12 @@ class MainActivity : AppCompatActivity() {
         replaceFragment(FragmentoInicio.newInstance(), false)
 
     }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun revisarPermisos() {
         when {
             ContextCompat.checkSelfPermission(
-                applicationContext,
-                "android.permission.RECORD_AUDIO"
+                applicationContext, "android.permission.RECORD_AUDIO"
             ) == PackageManager.PERMISSION_GRANTED -> {
                 // You can use the API that requires the permission.
 
@@ -36,26 +36,26 @@ class MainActivity : AppCompatActivity() {
                 // continue using your app without granting the permission.
                 //showInContextUI(...)
                 //Toast.makeText(applicationContext, "Debes dar perimso para grabar audios", Toast.LENGTH_SHORT).show()
-                MaterialAlertDialogBuilder(this
-                )
-                    .setTitle("Title")
-                    .setMessage("Debes dar perimso para grabar audios")
+                MaterialAlertDialogBuilder(
+                    this
+                ).setTitle("Title").setMessage("Debes dar perimso para grabar audios")
                     .setNegativeButton("Cancel") { dialog, which ->
                         // Respond to negative button press
-                    }
-                    .setPositiveButton("OK") { dialog, which ->
+                    }.setPositiveButton("OK") { dialog, which ->
                         // Respond to positive button press
                         /*requestPermissionLauncher.launch(
                             "android.permission.RECORD_AUDIO")*/
 
                         // You can directly ask for the permission.
                         requestPermissions(
-                            arrayOf("android.permission.RECORD_AUDIO","",
-                                "android.permission.WRITE_EXTERNAL_STORAGE"),
-                            1001)
+                            arrayOf(
+                                "android.permission.RECORD_AUDIO",
+                                "",
+                                "android.permission.WRITE_EXTERNAL_STORAGE"
+                            ), 1001
+                        )
 
-                    }
-                    .show()
+                    }.show()
             }
             shouldShowRequestPermissionRationale("android.permission.RECORD_AUDIO") -> {
                 // In an educational UI, explain to the user why your app requires this
@@ -64,26 +64,24 @@ class MainActivity : AppCompatActivity() {
                 // continue using your app without granting the permission.
                 //showInContextUI(...)
                 //Toast.makeText(applicationContext, "Debes dar perimso para grabar audios", Toast.LENGTH_SHORT).show()
-                MaterialAlertDialogBuilder(this
-                )
-                    .setTitle("Title")
-                    .setMessage("Debes dar perimso para acceder al almacenamiento")
+                MaterialAlertDialogBuilder(
+                    this
+                ).setTitle("Title").setMessage("Debes dar perimso para acceder al almacenamiento")
                     .setNegativeButton("Cancel") { dialog, which ->
                         // Respond to negative button press
-                    }
-                    .setPositiveButton("OK") { dialog, which ->
+                    }.setPositiveButton("OK") { dialog, which ->
                         // Respond to positive button press
                         /*requestPermissionLauncher.launch(
                             "android.permission.RECORD_AUDIO")*/
 
                         // You can directly ask for the permission.
                         requestPermissions(
-                            arrayOf("android.permission.READ_EXTERNAL_STORAGE"
-                               ),
-                            1003)
+                            arrayOf(
+                                "android.permission.READ_EXTERNAL_STORAGE"
+                            ), 1003
+                        )
 
-                    }
-                    .show()
+                    }.show()
             }
             shouldShowRequestPermissionRationale("android.permission.CAMERA") -> {
                 // In an educational UI, explain to the user why your app requires this
@@ -92,26 +90,25 @@ class MainActivity : AppCompatActivity() {
                 // continue using your app without granting the permission.
                 //showInContextUI(...)
                 //Toast.makeText(applicationContext, "Debes dar perimso para grabar audios", Toast.LENGTH_SHORT).show()
-                MaterialAlertDialogBuilder(this
-                )
-                    .setTitle("Title")
-                    .setMessage("Debes dar perimso para usar la camara")
+                MaterialAlertDialogBuilder(
+                    this
+                ).setTitle("Title").setMessage("Debes dar perimso para usar la camara")
                     .setNegativeButton("Cancel") { dialog, which ->
                         // Respond to negative button press
-                    }
-                    .setPositiveButton("OK") { dialog, which ->
+                    }.setPositiveButton("OK") { dialog, which ->
                         // Respond to positive button press
                         /*requestPermissionLauncher.launch(
                             "android.permission.RECORD_AUDIO")*/
 
                         // You can directly ask for the permission.
                         requestPermissions(
-                            arrayOf("android.permission.CAMERA",
-                                "android.permission.WRITE_EXTERNAL_STORAGE"),
-                            1002)
+                            arrayOf(
+                                "android.permission.CAMERA",
+                                "android.permission.WRITE_EXTERNAL_STORAGE"
+                            ), 1002
+                        )
 
-                    }
-                    .show()
+                    }.show()
             }
 
 
@@ -121,26 +118,25 @@ class MainActivity : AppCompatActivity() {
                 /*requestPermissionLauncher.launch(
                     "android.permission.RECORD_AUDIO")*/
                 requestPermissions(
-                    arrayOf("android.permission.RECORD_AUDIO","android.permission.CAMERA",
-                        "android.permission.READ_EXTERNAL_STORAGE" ,
-                        "android.permission.WRITE_EXTERNAL_STORAGE"),
-                    1004)
+                    arrayOf(
+                        "android.permission.RECORD_AUDIO",
+                        "android.permission.CAMERA",
+                        "android.permission.READ_EXTERNAL_STORAGE",
+                        "android.permission.WRITE_EXTERNAL_STORAGE"
+                    ), 1004
+                )
             }
         }
     }
+
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1001 -> {
                 // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                            grantResults[1] == PackageManager.PERMISSION_GRANTED
-                            )) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     replaceFragment(FragmentoInicio.newInstance(), false)
@@ -155,10 +151,7 @@ class MainActivity : AppCompatActivity() {
             }
             1002 -> {
                 // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                            grantResults[1] == PackageManager.PERMISSION_GRANTED
-                            )) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     replaceFragment(FragmentoInicio.newInstance(), false)
@@ -174,9 +167,7 @@ class MainActivity : AppCompatActivity() {
 
             1003 -> {
                 // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED
-                            )) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     replaceFragment(FragmentoInicio.newInstance(), false)
@@ -191,12 +182,7 @@ class MainActivity : AppCompatActivity() {
             }
             1004 -> {
                 // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() &&
-                            grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                            grantResults[1] == PackageManager.PERMISSION_GRANTED &&
-                            grantResults[2] == PackageManager.PERMISSION_GRANTED &&
-                            grantResults[3] == PackageManager.PERMISSION_GRANTED
-                            )) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED && grantResults[3] == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     replaceFragment(FragmentoInicio.newInstance(), false)

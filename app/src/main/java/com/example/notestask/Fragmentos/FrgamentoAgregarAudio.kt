@@ -21,7 +21,7 @@ import java.util.*
 
 class FrgamentoAgregarAudio : FragmentoBase() {
     private var idN = -1
-    private var auUri: String? = null
+    private var auUri: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
     private var mStartRecording: Boolean = true
@@ -48,27 +48,27 @@ class FrgamentoAgregarAudio : FragmentoBase() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnGuardarAudioCN.setOnClickListener{
+        btnGuardarAudioCN.setOnClickListener {
             guardarAudio()
         }
-        mostrarAudioCN.setOnClickListener{
+        mostrarAudioCN.setOnClickListener {
             onPlay(mStartPlaying)
-            mStartPlaying=!mStartPlaying
+            mStartPlaying = !mStartPlaying
         }
         btnAgregaAudioCN.setOnClickListener {
             onRecord(mStartRecording)
             mStartRecording = !mStartRecording
         }
-        btnAtrasAudioCN.setOnClickListener{
+        btnAtrasAudioCN.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
     }
 
-    private fun guardarAudio(){
+    private fun guardarAudio() {
         launch {
-            var aud=Audios()
-            aud.uri=auUri
-            aud.idNFK=idN
+            var aud = Audios()
+            aud.uri = auUri
+            aud.idNFK = idN
             context?.let {
 
                 BaseDatosNotas.getBaseDatos(it).dAOAudios().insertarAdios(aud)
@@ -79,11 +79,13 @@ class FrgamentoAgregarAudio : FragmentoBase() {
 
     }
 
+
     private fun onPlay(start: Boolean) = if (start) {
         startPlaying()
     } else {
         stopPlaying()
     }
+
     private fun startPlaying() {
         player = MediaPlayer().apply {
             try {
@@ -95,10 +97,12 @@ class FrgamentoAgregarAudio : FragmentoBase() {
             }
         }
     }
+
     private fun stopPlaying() {
         player?.release()
         player = null
     }
+
     var mStartPlaying = true
     private fun onRecord(start: Boolean) = if (start) {
         iniciarGrabacion()
@@ -148,6 +152,4 @@ class FrgamentoAgregarAudio : FragmentoBase() {
 
         }
     }
-
-
 }

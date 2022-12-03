@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.notestask.Adaptador.ImageControler
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Notas
 import com.example.notestask.R

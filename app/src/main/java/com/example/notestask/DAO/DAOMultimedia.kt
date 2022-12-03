@@ -21,5 +21,5 @@ interface DAOMultimedia {
     suspend fun actualizarMultimedia(multimedias: Multimedias)
 
     @Query("SELECT * FROM multimedias WHERE idImg= :idM")
-    suspend fun obtenerImagen(idM:Int):List<Multimedias>
+    suspend fun obtenerImagen(idM: Int): List<Multimedias>
 }

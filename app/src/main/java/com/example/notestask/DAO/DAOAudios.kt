@@ -2,7 +2,6 @@ package com.example.notestask.DAO
 
 import androidx.room.*
 import com.example.notestask.Entidades.Audios
-import com.example.notestask.Entidades.Multimedias
 
 @Dao
 interface DAOAudios {
@@ -22,5 +21,5 @@ interface DAOAudios {
     suspend fun actualizarAudio(audios: Audios)
 
     @Query("SELECT * FROM Audios WHERE idAud= :idA")
-    suspend fun obtenerAudio(idA:Int):List<Audios>
+    suspend fun obtenerAudio(idA: Int): List<Audios>
 }

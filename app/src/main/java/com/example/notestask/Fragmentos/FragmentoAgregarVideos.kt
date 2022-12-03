@@ -75,7 +75,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
         btnAtrasCNV.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
-        mostrarVideoCN.setOnClickListener{
+        mostrarVideoCN.setOnClickListener {
             mostrarVideoCN.start()
         }
     }
@@ -84,7 +84,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
         launch {
             var vids = Videos()
             vids.uri = viUri.toString()
-          //  vids.tipo = tipoCN.text.toString()
+            //  vids.tipo = tipoCN.text.toString()
             vids.idNFK = idN
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOVideos().insertarVideos(vids)

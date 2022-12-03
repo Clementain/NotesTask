@@ -1,7 +1,6 @@
 package com.example.notestask.DAO
 
 import androidx.room.*
-import com.example.notestask.Entidades.Multimedias
 import com.example.notestask.Entidades.Videos
 
 @Dao
@@ -22,5 +21,5 @@ interface DAOVideos {
     suspend fun actualizarVideos(videos: Videos)
 
     @Query("SELECT * FROM videos WHERE idV= :idV")
-    suspend fun obtenerImagen(idV:Int):List<Videos>
+    suspend fun obtenerImagen(idV: Int): List<Videos>
 }
