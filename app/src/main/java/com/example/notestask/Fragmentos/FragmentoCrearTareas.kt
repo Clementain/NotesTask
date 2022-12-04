@@ -1,35 +1,32 @@
 package com.example.notestask.Fragmentos
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import com.example.notestask.Alarmas.*
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.f_crear_tareas.*
-import kotlinx.android.synthetic.main.f_vista_tareas.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.abs
 
 class FragmentoCrearTareas : FragmentoBase() {
 
     var currentDate: String? = null
-    var lastDate: String? = null
-    var diferencia: Long? = null
+    private var dia = 0
+    private var mes = 0
+    private var anio = 0
+    private var hora = 0
+    private var minutos = 0
     private var taskId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +51,6 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -73,7 +69,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
 
 
-        val sdf = SimpleDateFormat("d/MM/yyyy h:m")
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
 
         currentDate = sdf.format(Date())
 
@@ -87,12 +83,7 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            lastDate = FechaCumplir.text.toString() + " " + horaCumplir.text.toString()
-            val dS = sdf.parse(currentDate.toString())
-            val dE = sdf.parse(lastDate.toString())
-            diferenciaFechas(dS as Date, dE as Date)
             programarNotificacion(cTituloT.text.toString())
-            crearCanal()
         }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
@@ -115,9 +106,6 @@ class FragmentoCrearTareas : FragmentoBase() {
 
     }
 
-    private fun diferenciaFechas(Fi: Date, Ff: Date) {
-        diferencia = abs(Ff.time - Fi.time)
-    }
 
     private fun mostrarCalendario() {
         val newFragment = Calendario { day, month, year -> onDateSelected(day, month, year) }
@@ -125,49 +113,47 @@ class FragmentoCrearTareas : FragmentoBase() {
     }
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
-        FechaCumplir.text = "$day/$month/$year"
+        val mescorregido = month + 1
+        FechaCumplir.text = "$day/$mescorregido/$year"
+        this.anio = year
+        this.dia = day
+        this.mes = month
+
     }
 
     private fun mostrarReloj() {
-        val newFragment = Reloj { onTimeSelected(it) }
+        val newFragment = Reloj { hour, minute -> onTimeSelected(hour, minute) }
         activity?.let { newFragment.show(it.supportFragmentManager, "reloj") }
     }
 
-    private fun onTimeSelected(time: String) {
-        horaCumplir.text = time
+    private fun onTimeSelected(hour: Int, minute: Int) {
+        horaCumplir.text = "$hour:$minute"
+        this.hora = hour
+        this.minutos = minute
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun crearCanal() {
-        val name = "Tareas Channel"
-        val desc = "Descripcion Canal Tareas"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelID, name, importance)
-        channel.description = desc
-        val notificationManager =
-            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun programarNotificacion(titulo: String) {
-        val intent = Intent(context, AlarmaReceiver::class.java)
-        val message = "No se te olvide completar esta tarea"
-        intent.putExtra(titleExtra, titulo)
-        intent.putExtra(messageExtra, message)
+        getTime(titulo)
+    }
 
+    private fun startAlarm(calendar: Calendar, titulo: String) {
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmaReceiver::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(tituloExtra2, titulo)
+        intent.putExtra(mensajeExtra2, message)
+        val pendingIntent = PendingIntent.getBroadcast(context, notificationID, intent, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+    }
 
-        val pendingIntent = PendingIntent.getBroadcast(
-            context, notificationID, intent, 0
-        )
-        // val time = getTime()
-        alarmManager.set(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            //time,
-            SystemClock.elapsedRealtime() + diferencia!!, pendingIntent
-        )
-        AlarmaReceiver().onReceive(requireActivity().applicationContext, intent)
+    private fun getTime(titulo: String) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hora)
+        calendar.set(Calendar.MINUTE, minutos)
+        calendar.set(Calendar.SECOND, 0)
+        startAlarm(calendar, titulo)
     }
 
     private fun actualizarTarea() {
