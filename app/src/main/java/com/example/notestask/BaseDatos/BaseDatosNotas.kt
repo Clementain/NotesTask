@@ -8,7 +8,7 @@ import com.example.notestask.DAO.*
 import com.example.notestask.Entidades.*
 
 @Database(
-    entities = [Notas::class, Tareas::class, Multimedias::class, Videos::class, Audios::class],
+    entities = [Notas::class, Tareas::class, Multimedias::class, Videos::class, Audios::class,Reminder::class],
     version = 1,
     exportSchema = false
 )
@@ -33,4 +33,5 @@ abstract class BaseDatosNotas : RoomDatabase() {
     abstract fun dAOMultimedia(): DAOMultimedia
     abstract fun dAOVideos(): DAOVideos
     abstract fun dAOAudios(): DAOAudios
+    abstract fun dAOReminder():DAORecordatorios
 }
