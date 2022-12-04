@@ -19,13 +19,17 @@ import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.f_crear_tareas.*
+import kotlinx.android.synthetic.main.f_vista_tareas.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 class FragmentoCrearTareas : FragmentoBase() {
 
     var currentDate: String? = null
+    var lastDate: String? = null
+    var diferencia: Long? = null
     private var taskId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +66,14 @@ class FragmentoCrearTareas : FragmentoBase() {
                     var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
                     cTituloT.setText(tareas.tituloT)
                     cDescT.setText(tareas.descripcionT)
-                    // fechaCumplir.setText(tareas.fechaCumplirT)
-
+                    FechaCumplir.text = tareas.fechaCumplirT
+                    horaCumplir.text = tareas.horaCumplirT
                 }
             }
         }
 
 
-        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("d/MM/yyyy h:m")
 
         currentDate = sdf.format(Date())
 
@@ -83,6 +87,10 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
+            lastDate = FechaCumplir.text.toString() + " " + horaCumplir.text.toString()
+            val dS = sdf.parse(currentDate.toString())
+            val dE = sdf.parse(lastDate.toString())
+            diferenciaFechas(dS as Date, dE as Date)
             scheduleNotificaction("Prueba")
             createNotificationChannel()
         }
@@ -98,7 +106,35 @@ class FragmentoCrearTareas : FragmentoBase() {
         btnAtrasT.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
+        btnCalendario.setOnClickListener {
+            mostrarCalendario()
+        }
+        btnReloj.setOnClickListener {
+            mostrarReloj()
+        }
 
+    }
+
+    private fun diferenciaFechas(Fi: Date, Ff: Date) {
+        diferencia = abs(Ff.time - Fi.time)
+    }
+
+    private fun mostrarCalendario() {
+        val newFragment = Calendario { day, month, year -> onDateSelected(day, month, year) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "calendario") }
+    }
+
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        FechaCumplir.text = "$day/$month/$year"
+    }
+
+    private fun mostrarReloj() {
+        val newFragment = Reloj { onTimeSelected(it) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "reloj") }
+    }
+
+    private fun onTimeSelected(time: String) {
+        horaCumplir.text = time
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -129,7 +165,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         alarmManager.set(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
             //time,
-            SystemClock.elapsedRealtime() + 10 * 1000, pendingIntent
+            SystemClock.elapsedRealtime() + diferencia!!, pendingIntent
         )
     }
 
@@ -142,12 +178,14 @@ class FragmentoCrearTareas : FragmentoBase() {
                 tareas.tituloT = cTituloT.text.toString()
                 tareas.descripcionT = cDescT.text.toString()
                 tareas.fechaT = currentDate
-                //   tareas.fechaCumplirT=fechaCumplir.text.toString()
+                tareas.fechaCumplirT = FechaCumplir.text.toString()
+                tareas.horaCumplirT = horaCumplir.text.toString()
 
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().actualizarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
-                //             fechaCumplir.text = ""
+                FechaCumplir.text = ""
+                horaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
@@ -161,11 +199,14 @@ class FragmentoCrearTareas : FragmentoBase() {
             tareas.tituloT = cTituloT.text.toString()
             tareas.descripcionT = cDescT.text.toString()
             tareas.fechaT = currentDate
-            // tareas.fechaCumplirT=fechaCumplir.text.toString()
+            tareas.fechaCumplirT = FechaCumplir.text.toString()
+            tareas.horaCumplirT = horaCumplir.text.toString()
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().insertarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
+                FechaCumplir.text = ""
+                horaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
