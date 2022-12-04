@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -51,6 +50,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,7 +69,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
 
 
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
 
         currentDate = sdf.format(Date())
 
@@ -83,7 +83,7 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            scheduleNotificaction(cTituloT.text.toString())
+            scheduleNotificaction("Prueba")
             createNotificationChannel()
         }
         btnBorrarT.setOnClickListener {
@@ -101,8 +101,38 @@ class FragmentoCrearTareas : FragmentoBase() {
 
     }
 
-    private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val name = "Tareas Channel"
+        val desc = "A description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager =
+            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun scheduleNotificaction(titulo: String) {
+        val intent = Intent(context, AlarmaReceiver::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(titleExtra, titulo)
+        intent.putExtra(messageExtra, message)
+
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, notificationID, intent, 0
+        )
+        // val time = getTime()
+        alarmManager.set(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            //time,
+            SystemClock.elapsedRealtime() + 10 * 1000, pendingIntent
+        )
+    }
+
     private fun actualizarTarea() {
         launch {
 
@@ -149,43 +179,6 @@ class FragmentoCrearTareas : FragmentoBase() {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun scheduleNotificaction(titulo: String) {
-        val intent = Intent(context, AlarmaReceiver::class.java)
-        val message = "Tienes esta tarea pendiente"
-        intent.putExtra(titleExtra, titulo)
-        intent.putExtra(messageExtra, message)
-
-        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            notificationID,
-            intent,
-            0
-        )
-
-        // val time = getTime()
-        alarmManager.set(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            //time,
-            SystemClock.elapsedRealtime() + 10 * 1000,
-            pendingIntent
-        )
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val name = "Notif Channel"
-        val desc = "A description of the Channel"
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(channelID, name, importance)
-        channel.description = desc
-        val notificationManager =
-            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
 }
