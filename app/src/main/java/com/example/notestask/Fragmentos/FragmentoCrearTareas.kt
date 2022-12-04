@@ -1,16 +1,21 @@
 package com.example.notestask.Fragmentos
 
 import android.app.AlarmManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.notestask.Alarmas.AlarmaReceiver
+import androidx.annotation.RequiresApi
+import com.example.notestask.Alarmas.*
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
@@ -78,17 +83,8 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            alarmMgr = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
-            alarmIntent = Intent(
-                requireActivity().applicationContext, AlarmaReceiver::class.java
-            ).let { intent ->
-                PendingIntent.getBroadcast(requireActivity().applicationContext, 1001, intent, 0)
-            }
-            alarmMgr?.set(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 5 * 1000,
-                alarmIntent
-            )
+            scheduleNotificaction(cTituloT.text.toString())
+            createNotificationChannel()
         }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
@@ -127,6 +123,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
+
     private fun guardarTarea() {
 
         launch {
@@ -154,6 +151,42 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun scheduleNotificaction(titulo: String) {
+        val intent = Intent(context, AlarmaReceiver::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(titleExtra, titulo)
+        intent.putExtra(messageExtra, message)
+
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            notificationID,
+            intent,
+            0
+        )
+
+        // val time = getTime()
+        alarmManager.set(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            //time,
+            SystemClock.elapsedRealtime() + 10 * 1000,
+            pendingIntent
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val name = "Notif Channel"
+        val desc = "A description of the Channel"
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelID, name, importance)
+        channel.description = desc
+        val notificationManager =
+            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
 
 }
 
