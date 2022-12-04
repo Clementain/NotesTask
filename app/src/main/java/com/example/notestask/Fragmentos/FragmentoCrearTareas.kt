@@ -91,8 +91,8 @@ class FragmentoCrearTareas : FragmentoBase() {
             val dS = sdf.parse(currentDate.toString())
             val dE = sdf.parse(lastDate.toString())
             diferenciaFechas(dS as Date, dE as Date)
-            scheduleNotificaction("Prueba")
-            createNotificationChannel()
+            programarNotificacion(cTituloT.text.toString())
+            crearCanal()
         }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
@@ -138,9 +138,9 @@ class FragmentoCrearTareas : FragmentoBase() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
+    private fun crearCanal() {
         val name = "Tareas Channel"
-        val desc = "A description of the Channel"
+        val desc = "Descripcion Canal Tareas"
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(channelID, name, importance)
         channel.description = desc
@@ -150,9 +150,9 @@ class FragmentoCrearTareas : FragmentoBase() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun scheduleNotificaction(titulo: String) {
+    private fun programarNotificacion(titulo: String) {
         val intent = Intent(context, AlarmaReceiver::class.java)
-        val message = "Tienes esta tarea pendiente"
+        val message = "No se te olvide completar esta tarea"
         intent.putExtra(titleExtra, titulo)
         intent.putExtra(messageExtra, message)
 
@@ -167,6 +167,7 @@ class FragmentoCrearTareas : FragmentoBase() {
             //time,
             SystemClock.elapsedRealtime() + diferencia!!, pendingIntent
         )
+        AlarmaReceiver().onReceive(requireActivity().applicationContext, intent)
     }
 
     private fun actualizarTarea() {
