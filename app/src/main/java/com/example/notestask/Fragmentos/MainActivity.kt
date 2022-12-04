@@ -83,6 +83,32 @@ class MainActivity : AppCompatActivity() {
 
                     }.show()
             }
+            shouldShowRequestPermissionRationale("android.permission.POST_NOTIFICACTIONS") -> {
+                // In an educational UI, explain to the user why your app requires this
+                // permission for a specific feature to behave as expected. In this UI,
+                // include a "cancel" or "no thanks" button that allows the user to
+                // continue using your app without granting the permission.
+                //showInContextUI(...)
+                //Toast.makeText(applicationContext, "Debes dar perimso para grabar audios", Toast.LENGTH_SHORT).show()
+                MaterialAlertDialogBuilder(
+                    this
+                ).setTitle("Title").setMessage("Debes dar perimso para las alarmas")
+                    .setNegativeButton("Cancel") { dialog, which ->
+                        // Respond to negative button press
+                    }.setPositiveButton("OK") { dialog, which ->
+                        // Respond to positive button press
+                        /*requestPermissionLauncher.launch(
+                            "android.permission.RECORD_AUDIO")*/
+
+                        // You can directly ask for the permission.
+                        requestPermissions(
+                            arrayOf(
+                                "android.permission.READ_EXTERNAL_STORAGE"
+                            ), 1010
+                        )
+
+                    }.show()
+            }
             shouldShowRequestPermissionRationale("android.permission.CAMERA") -> {
                 // In an educational UI, explain to the user why your app requires this
                 // permission for a specific feature to behave as expected. In this UI,
@@ -122,7 +148,8 @@ class MainActivity : AppCompatActivity() {
                         "android.permission.RECORD_AUDIO",
                         "android.permission.CAMERA",
                         "android.permission.READ_EXTERNAL_STORAGE",
-                        "android.permission.WRITE_EXTERNAL_STORAGE"
+                        "android.permission.WRITE_EXTERNAL_STORAGE",
+                        "android.permission.POST_NOTIFICACTIONS"
                     ), 1004
                 )
             }
@@ -183,6 +210,21 @@ class MainActivity : AppCompatActivity() {
             1004 -> {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED && grantResults[3] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    replaceFragment(FragmentoInicio.newInstance(), false)
+                } else {
+                    // Explain to the user that the feature is unavailable because
+                    // the features requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                }
+                return
+            }
+            1010 -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     replaceFragment(FragmentoInicio.newInstance(), false)

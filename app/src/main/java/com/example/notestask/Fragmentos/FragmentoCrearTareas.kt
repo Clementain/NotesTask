@@ -1,10 +1,16 @@
 package com.example.notestask.Fragmentos
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.notestask.Alarmas.AlarmaReceiver
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
@@ -72,7 +78,19 @@ class FragmentoCrearTareas : FragmentoBase() {
                 guardarTarea()
             }
         }
-
+        btnFechaRecordar.setOnClickListener {
+            alarmMgr = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
+            alarmIntent = Intent(
+                requireActivity().applicationContext, AlarmaReceiver::class.java
+            ).let { intent ->
+                PendingIntent.getBroadcast(requireActivity().applicationContext, 1001, intent, 0)
+            }
+            alarmMgr?.set(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime() + 5 * 1000,
+                alarmIntent
+            )
+        }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
                 borrarTarea()
@@ -88,7 +106,8 @@ class FragmentoCrearTareas : FragmentoBase() {
 
     }
 
-
+    private var alarmMgr: AlarmManager? = null
+    private lateinit var alarmIntent: PendingIntent
     private fun actualizarTarea() {
         launch {
 
