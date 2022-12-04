@@ -140,9 +140,6 @@ class FragmentoCrearNotas : FragmentoBase() {
                 notes.fecha = currentDate
 
                 BaseDatosNotas.getBaseDatos(it).dAONotas().actualizarNota(notes)
-                urImagen?.let {
-                    ImageControler.saveImage(requireContext(), noteId.toLong(), it, "N")
-                }
                 cTitulo.setText("")
                 cDesc.setText("")
                 requireActivity().supportFragmentManager.popBackStack()
@@ -162,9 +159,6 @@ class FragmentoCrearNotas : FragmentoBase() {
 
                 BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
                 val id = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
-                urImagen?.let {
-                    ImageControler.saveImage(requireContext(), id!!.toLong(), it, "N")
-                }
                 cTitulo.setText("")
                 cDesc.setText("")
                 requireActivity().supportFragmentManager.popBackStack()

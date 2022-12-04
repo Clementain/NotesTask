@@ -15,7 +15,6 @@ import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.f_crear_tareas.*
-import kotlinx.android.synthetic.main.f_vista_tareas.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -122,7 +121,7 @@ class FragmentoCrearTareas : FragmentoBase() {
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().actualizarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
-                fechaCumplir.text = ""
+                //             fechaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }

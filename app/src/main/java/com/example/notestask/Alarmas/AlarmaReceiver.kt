@@ -8,27 +8,44 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.notestask.MainActivity
 import com.example.notestask.R
 
-class AlarmaReceiver:BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
+class AlarmaReceiver : BroadcastReceiver() {
+    override fun onReceive(p0: Context?, p1: Intent?) {
+        p0?.let { createNotificationChannel(it, null) }
+        Log.d("PRUEBABOOTEO", "BROADCAST: ${p1?.action}")
+        Toast.makeText(p0, "BROADCAST: ${p1?.action}", Toast.LENGTH_LONG).show()
+        when (p1?.action) {
+            // Set the alarm here.
+            "android.intent.action.BOOT_COMPLETED" -> {
+                Log.d("SEBOOTEO", "SE HA CARGADO ANDROID")
+                //ESTABLECER ALARMA
+                p0?.let { p1.let { it1 -> mostrarNotificacion(it, it1) } }
+            }
+            else -> {
 
+                Log.d("DIF-ALARMA", "PERRO-ROJO")
+                p0?.let { p1?.let { it1 -> mostrarNotificacion(it, it1) } }
+                Log.d("DIF-ALARMA", "NOTIFICACION LANZADA")
+            }
+        }
     }
-    private fun mostrarNotificaciones(context: Context,intent: Intent){
+
+    private fun mostrarNotificacion(context: Context, intent: Intent) {
         Log.d("DIF-ALARMA", "NOTIFICACION creando")
-        val intenTap=Intent(context,MainActivity::class.java)
-        intenTap.flags=Intent.FLAG_ACTIVITY_SINGLE_TOP
-        intenTap.putExtra("idT",1002)
-        val pendingIntent=PendingIntent.getActivity(context,0,intenTap,PendingIntent.FLAG_UPDATE_CURRENT)
-        val builder:NotificationCompat.Builder=NotificationCompat.Builder(context,CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Titulo Recordatorio")
+        val intenTap = Intent(context, MainActivity::class.java)
+        intenTap.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        intenTap.putExtra("idT", 1002)
+        val pendingIntent =
+            PendingIntent.getActivity(context, 0, intenTap, PendingIntent.FLAG_UPDATE_CURRENT)
+        val builder: NotificationCompat.Builder = NotificationCompat.Builder(context, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground).setContentTitle("Titulo Recordatorio")
             .setContentText("Te Recuerdo que Tienes Algo Pendiente")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT).setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(context)
@@ -36,7 +53,8 @@ class AlarmaReceiver:BroadcastReceiver() {
         notificationManager.notify(1001, builder.build())
 
     }
-    companion object{
+
+    companion object {
         val CHANNEL_ID = "RECORDATORIOS-TAREAS"
         fun createNotificationChannel(ctx: Context, intent: Intent?) {
             // Create the NotificationChannel, but only on API 26+ because
@@ -54,7 +72,7 @@ class AlarmaReceiver:BroadcastReceiver() {
                 )
                 notificationManager.createNotificationChannel(channel)
             }
-          }
+        }
 
     }
 }
