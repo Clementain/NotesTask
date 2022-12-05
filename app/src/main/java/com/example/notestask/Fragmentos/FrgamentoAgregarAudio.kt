@@ -1,5 +1,6 @@
 package com.example.notestask.Fragmentos
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -113,15 +114,18 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         stopRecording()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun stopRecording() {
         recorder?.apply {
             stop()
             release()
         }
         recorder = null
+        txtStart.text="Presiona el boton para iniciar la grabación"
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun iniciarGrabacion() {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -137,7 +141,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
             }
             start()
         }
-
+        txtStart.text="Presiona el boton para detener la grabación"
     }
 
     @Throws(IOException::class)
