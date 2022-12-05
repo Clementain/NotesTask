@@ -170,10 +170,8 @@ class FragmentoCrearTareas : FragmentoBase() {
     private fun startAlarm(calendar: Calendar, titulo: String) {
         val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmaReceiver::class.java)
-        val message = "Tienes esta tarea pendiente"
-        intent.putExtra(tituloExtra2, titulo)
-        intent.putExtra(mensajeExtra2, message)
-        val pendingIntent = PendingIntent.getBroadcast(context, notificationID, intent, 0)
+        intent.action = titulo
+        val pendingIntent = PendingIntent.getBroadcast(context, notID, intent, 0)
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
     }
 

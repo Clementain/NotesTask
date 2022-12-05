@@ -14,7 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.example.notestask.R
 
 
-class  Notificaciones(base: Context) : ContextWrapper(base) {
+class Notificaciones(base: Context) : ContextWrapper(base) {
 
     val MYCHANNEL_ID = "App Alert Notification ID"
     val MYCHANNEL_NAME = "App Alert Notification"
@@ -30,27 +30,27 @@ class  Notificaciones(base: Context) : ContextWrapper(base) {
     // Create channel for Android version 26+
     @TargetApi(Build.VERSION_CODES.O)
     private fun createChannels() {
-        val channel = NotificationChannel(MYCHANNEL_ID, MYCHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
+        val channel =
+            NotificationChannel(MYCHANNEL_ID, MYCHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
         channel.enableVibration(true)
         getManager().createNotificationChannel(channel)
     }
 
     // Get Manager
-    fun getManager() : NotificationManager {
-        if (manager == null) manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    fun getManager(): NotificationManager {
+        if (manager == null) manager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         return manager as NotificationManager
     }
 
-    fun getNotificationBuilder(titulo:String): NotificationCompat.Builder {
+    fun getNotificationBuilder(titulo: String): NotificationCompat.Builder {
         val intent = Intent(this, FragmentoCrearTareas::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(this, notificationID, intent, 0)
-        return NotificationCompat.Builder(applicationContext, MYCHANNEL_ID)
-            .setContentTitle(titulo)
+        val pendingIntent = PendingIntent.getActivity(this, notID, intent, 0)
+        return NotificationCompat.Builder(applicationContext, MYCHANNEL_ID).setContentTitle(titulo)
             .setContentText("Tienes una tarea pendiente")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setColor(Color.YELLOW)
+            .setSmallIcon(R.drawable.ic_launcher_foreground).setColor(Color.YELLOW)
             .setContentIntent(pendingIntent)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setAutoCancel(true)

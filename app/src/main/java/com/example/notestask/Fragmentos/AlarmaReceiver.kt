@@ -5,15 +5,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-
-var notificationID = 1
-const val tituloExtra2 = "Tarea Pendiente"
-const val mensajeExtra2 = "messageExtra"
+var notID = 1
 
 class AlarmaReceiver : BroadcastReceiver() {
+
+    var titulo = "Pendiente"
     override fun onReceive(context: Context, intent: Intent) {
+        intent.action?.let { datos(it) }
         val notificationUtils = Notificaciones(context)
-        val notification = notificationUtils.getNotificationBuilder(tituloExtra2).build()
-        notificationUtils.getManager().notify(notificationID++, notification)
+        val notification = notificationUtils.getNotificationBuilder(titulo).build()
+        notificationUtils.getManager().notify(notID++, notification)
+    }
+
+    private fun datos(info: String) {
+        val infor = info.split(" ")
+        this.titulo = infor[0]
     }
 }
