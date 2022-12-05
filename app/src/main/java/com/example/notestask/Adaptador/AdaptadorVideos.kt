@@ -14,6 +14,7 @@ class AdaptadorVideos : RecyclerView.Adapter<AdaptadorVideos.VideosViewHolder>()
     class VideosViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     var arrvideos = ArrayList<Videos>()
+    var listener: OnItemClickListener? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideosViewHolder {
@@ -37,6 +38,17 @@ class AdaptadorVideos : RecyclerView.Adapter<AdaptadorVideos.VideosViewHolder>()
         holder.itemView.videoViewN.setOnClickListener {
             holder.itemView.videoViewN.start()
         }
+        holder.itemView.btnEditarV.setOnClickListener {
+            listener!!.onClicked(arrvideos[position].idV!!)
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onClicked(vId: Int)
+    }
+
+    fun setOnClickListener(listener1: OnItemClickListener) {
+        listener = listener1
     }
 
 }

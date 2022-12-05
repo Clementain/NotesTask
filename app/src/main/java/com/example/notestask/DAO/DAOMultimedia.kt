@@ -20,4 +20,10 @@ interface DAOMultimedia {
     @Update
     suspend fun actualizarMultimedia(multimedias: Multimedias)
 
+    @Query("SELECT* FROM multimedias where idImg=:mId")
+    suspend fun obtenerUnaImagen(mId: Int):Multimedias
+
+    @Query("DELETE FROM multimedias WHERE idImg=:mId")
+    suspend fun borrarImagen(mId: Int)
+
 }

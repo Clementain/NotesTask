@@ -20,4 +20,10 @@ interface DAOVideos {
     @Update
     suspend fun actualizarVideos(videos: Videos)
 
+    @Query("SELECT * FROM videos where idV=:vId")
+    suspend fun obtenervideo(vId: Int): Videos
+
+    @Query("DELETE FROM videos where idV=:vId")
+    suspend fun borrarVideo(vId: Int)
+
 }

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.f_vista_imagenes.view.*
 class AdaptadorImagenes : RecyclerView.Adapter<AdaptadorImagenes.ImagesViewHolder>() {
     class ImagesViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-
+    var listener: OnItemClickListener? = null
     var arrimagenes = ArrayList<Multimedias>()
 
 
@@ -35,6 +35,17 @@ class AdaptadorImagenes : RecyclerView.Adapter<AdaptadorImagenes.ImagesViewHolde
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
         holder.itemView.imageViewN.setImageURI(Uri.parse(arrimagenes[position].uri))
+        holder.itemView.btnEditarM.setOnClickListener {
+            listener!!.onClicked(arrimagenes[position].idImg!!)
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onClicked(mId: Int)
+    }
+
+    fun setOnClickListener(listener1: OnItemClickListener) {
+        listener = listener1
     }
 
 }

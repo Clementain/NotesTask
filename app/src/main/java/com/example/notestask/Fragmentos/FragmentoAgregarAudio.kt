@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Audios
 import com.example.notestask.R
@@ -20,10 +21,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class FrgamentoAgregarAudio : FragmentoBase() {
+class FragmentoAgregarAudio : FragmentoBase() {
     private var idN = -1
     private var tipo = -1
     private var auUri: String = ""
+    private var aId = -1
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
     private var mStartRecording: Boolean = true
@@ -33,6 +35,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idNA", -1)
         tipo = requireArguments().getInt("tipo", -1)
+        aId = requireArguments().getInt("aId", -1)
 
     }
 
@@ -44,15 +47,30 @@ class FrgamentoAgregarAudio : FragmentoBase() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = FrgamentoAgregarAudio().apply {
+        fun newInstance() = FragmentoAgregarAudio().apply {
             arguments = Bundle().apply { }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (aId != -1) {
+
+            launch {
+                context?.let {
+                    var auds = BaseDatosNotas.getBaseDatos(it).dAOAudios().obtenerAudio(aId)
+                    auUri = auds.uri.toString()
+                }
+            }
+        }
+
         btnGuardarAudioCN.setOnClickListener {
-            guardarAudio()
+            if (aId != -1) {
+                actualizaraudio()
+            } else {
+                guardarAudio()
+            }
         }
         mostrarAudioCN.setOnClickListener {
             onPlay(mStartPlaying)
@@ -64,6 +82,23 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         }
         btnAtrasAudioCN.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+        btnBorrarA.setOnClickListener {
+            if (aId != -1) {
+                borrarAudio()
+            } else {
+                Toast.makeText(requireContext(), "Primero guarda el audio", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun borrarAudio() {
+        launch {
+            context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarAudio(aId)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
     }
 
@@ -81,6 +116,18 @@ class FrgamentoAgregarAudio : FragmentoBase() {
 
         }
 
+    }
+
+    private fun actualizaraudio() {
+        launch {
+            context?.let {
+                var auds = BaseDatosNotas.getBaseDatos(it).dAOAudios().obtenerAudio(aId)
+                auds.uri = auUri
+
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().actualizarAudio(auds)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
     }
 
 
@@ -121,7 +168,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
             release()
         }
         recorder = null
-        txtStart.text="Presiona el boton para iniciar la grabación"
+        txtStart.text = "Presiona el boton para iniciar la grabación"
     }
 
 
@@ -141,7 +188,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
             }
             start()
         }
-        txtStart.text="Presiona el boton para detener la grabación"
+        txtStart.text = "Presiona el boton para detener la grabación"
     }
 
     @Throws(IOException::class)

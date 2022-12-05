@@ -65,4 +65,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_notification_overlay" />
 
+    <ImageView
+        android:id="@+id/btnBorrarA"
+        android:layout_width="39dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuardarAudioCN"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

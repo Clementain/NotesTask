@@ -14,7 +14,7 @@ import java.io.IOException
 class AdaptadorAudios : RecyclerView.Adapter<AdaptadorAudios.AudsViewHolder>() {
     class AudsViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-
+    var listener: OnItemClickListener? = null
     var arraudios = ArrayList<Audios>()
     private var player: MediaPlayer? = null
 
@@ -39,6 +39,11 @@ class AdaptadorAudios : RecyclerView.Adapter<AdaptadorAudios.AudsViewHolder>() {
 
             onPlay(mStartPlaying, arraudios[position].uri.toString())
             mStartPlaying = !mStartPlaying
+        }
+
+        holder.itemView.btnEditarA.setOnClickListener {
+            listener!!.onClicked(arraudios[position].idAud!!)
+
         }
     }
 
@@ -67,5 +72,13 @@ class AdaptadorAudios : RecyclerView.Adapter<AdaptadorAudios.AudsViewHolder>() {
     }
 
     var mStartPlaying = true
+
+    interface OnItemClickListener {
+        fun onClicked(aId: Int)
+    }
+
+    fun setOnClickListener(listener1: OnItemClickListener) {
+        listener = listener1
+    }
 
 }

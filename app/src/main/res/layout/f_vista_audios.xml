@@ -22,5 +22,11 @@
             android:layout_height="162dp"
             app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
+        <ImageView
+            android:id="@+id/btnEditarA"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+
     </androidx.cardview.widget.CardView>
 </LinearLayout>

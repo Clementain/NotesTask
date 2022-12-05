@@ -71,6 +71,11 @@ class FragmentoMultimedia : FragmentoBase() {
                 rvAudios.adapter = adaptadoraudio
             }
         }
+
+        adaptadoraudio.setOnClickListener(onClickedA)
+        adaptadorimagen.setOnClickListener(onClickedM)
+        adaptadorvideo.setOnClickListener(onCLickedV)
+
         fabBtnAddM.setOnClickListener {
             var fragment: Fragment
             var bundle = Bundle()
@@ -95,12 +100,49 @@ class FragmentoMultimedia : FragmentoBase() {
             var bundle = Bundle()
             bundle.putInt("idNA", idN)
             bundle.putInt("tipo", tipo)
-            fragment = FrgamentoAgregarAudio.newInstance()
+            fragment = FragmentoAgregarAudio.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
         }
         btnAtrasFGM.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
+
+    private val onClickedA = object : AdaptadorAudios.OnItemClickListener {
+        override fun onClicked(aId: Int) {
+            var fragment: Fragment
+            var bundle = Bundle()
+            bundle.putInt("aId", aId)
+            bundle.putInt("tipo",tipo)
+            fragment = FragmentoAgregarAudio.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
+        }
+    }
+
+    private val onClickedM = object : AdaptadorImagenes.OnItemClickListener {
+        override fun onClicked(mId: Int) {
+            var fragment: Fragment
+            var bundle = Bundle()
+            bundle.putInt("mId", mId)
+            bundle.putInt("tipo",tipo)
+            fragment = FragmentoAgregarImagenes.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
+        }
+    }
+
+    private val onCLickedV = object : AdaptadorVideos.OnItemClickListener {
+        override fun onClicked(vId: Int) {
+            var fragment: Fragment
+            var bundle = Bundle()
+            bundle.putInt("vId", vId)
+            bundle.putInt("tipo",tipo)
+            fragment = FragmentoAgregarVideos.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
         }
     }
 

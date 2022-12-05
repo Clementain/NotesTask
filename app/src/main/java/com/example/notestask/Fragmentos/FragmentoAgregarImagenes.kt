@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Multimedias
@@ -23,11 +24,13 @@ class FragmentoAgregarImagenes : FragmentoBase() {
     private var idN = -1
     private var tipo = -1
     private var urImagen: Uri? = null
+    private var mId = -1
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idN", -1)
         tipo = requireArguments().getInt("tipo", -1)
+        mId = requireArguments().getInt("mId", -1)
     }
 
     override fun onCreateView(
@@ -48,7 +51,23 @@ class FragmentoAgregarImagenes : FragmentoBase() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (mId != -1) {
+            launch {
+                context?.let {
+                    var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerUnaImagen(mId)
+                    mostrarFotoCN.setImageURI(Uri.parse(imgs.uri))
+                }
+            }
+        }
 
+        btnBorrarM.setOnClickListener {
+            if (mId != -1) {
+                borrarImagen()
+            } else {
+                Toast.makeText(requireContext(), "Primero guarda la imagen", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
 
         btnAgregarFotoCamaraCN.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -72,10 +91,35 @@ class FragmentoAgregarImagenes : FragmentoBase() {
         }
 
         btnGuardarCN.setOnClickListener {
-            guardarImagen()
+            if (mId != -1) {
+                actualizarImagen()
+            } else {
+                guardarImagen()
+            }
         }
         btnAtrasCN.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
+        }
+    }
+
+    private fun actualizarImagen() {
+        launch {
+            context?.let {
+                var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerUnaImagen(mId)
+                imgs.uri = urImagen.toString()
+
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().actualizarMultimedia(imgs)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
+
+    private fun borrarImagen() {
+        launch {
+            context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarImagen(mId)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
         }
     }
 

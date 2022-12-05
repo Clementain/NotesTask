@@ -22,5 +22,11 @@
             android:layout_height="300dp"
             tools:srcCompat="@tools:sample/avatars" />
 
+        <ImageView
+            android:id="@+id/btnEditarM"
+            android:layout_width="49dp"
+            android:layout_height="53dp"
+            app:srcCompat="@android:drawable/ic_dialog_info" />
+
     </androidx.cardview.widget.CardView>
 </LinearLayout>

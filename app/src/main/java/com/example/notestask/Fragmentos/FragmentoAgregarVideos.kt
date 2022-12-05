@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Videos
@@ -23,11 +24,13 @@ class FragmentoAgregarVideos : FragmentoBase() {
     private var idN = -1
     private var tipo = -1
     private var viUri: Uri? = null
+    private var vId = -1
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idNV", -1)
         tipo = requireArguments().getInt("tipo", -1)
+        vId = requireArguments().getInt("vId", -1)
     }
 
     override fun onCreateView(
@@ -48,7 +51,14 @@ class FragmentoAgregarVideos : FragmentoBase() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        if (vId != -1) {
+            launch {
+                context?.let {
+                    var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenervideo(vId)
+                    mostrarVideoCN.setVideoURI(Uri.parse(vids.uri))
+                }
+            }
+        }
 
         btnAgregarVideoCamaraCN.setOnClickListener {
             Intent(MediaStore.ACTION_VIDEO_CAPTURE).also { takeVideoIntent ->
@@ -72,8 +82,23 @@ class FragmentoAgregarVideos : FragmentoBase() {
         }
 
         btnGuardarCNV.setOnClickListener {
-            guardarVideo()
+            if (vId != -1) {
+                actualizarVideo()
+            } else {
+                guardarVideo()
+            }
         }
+
+        btnBorrarV.setOnClickListener {
+            if (vId != -1) {
+                borrarVideo()
+            } else {
+                Toast.makeText(requireContext(), "Primero guarda el video", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
+
         btnAtrasCNV.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -92,6 +117,27 @@ class FragmentoAgregarVideos : FragmentoBase() {
                 BaseDatosNotas.getBaseDatos(it).dAOVideos().insertarVideos(vids)
                 requireActivity().supportFragmentManager.popBackStack()
 
+            }
+        }
+    }
+
+    private fun actualizarVideo() {
+        launch {
+            context?.let {
+                var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenervideo(vId)
+                vids.uri = viUri.toString()
+
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().actualizarVideos(vids)
+                requireActivity().supportFragmentManager.popBackStack()
+            }
+        }
+    }
+
+    private fun borrarVideo() {
+        launch {
+            context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarVideo(vId)
+                requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }

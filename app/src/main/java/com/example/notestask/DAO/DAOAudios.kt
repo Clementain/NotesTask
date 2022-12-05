@@ -20,4 +20,10 @@ interface DAOAudios {
     @Update
     suspend fun actualizarAudio(audios: Audios)
 
+    @Query("SELECT * FROM audios WHERE idAud=:aId")
+    suspend fun obtenerAudio(aId:Int):Audios
+
+    @Query("DELETE FROM audios WHERE idAud=:aId")
+    suspend fun borrarAudio(aId: Int)
+
 }
