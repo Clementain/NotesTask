@@ -12,9 +12,6 @@ interface DAOTareas {
     @Query("SELECT * FROM tasks WHERE idT =:id")
     suspend fun obtenerTarea(id: Int): Tareas
 
-    @Query("SELECT MAX(idT) FROM tasks")
-    suspend fun obtenerId(): Int?
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarTarea(task: Tareas)
 

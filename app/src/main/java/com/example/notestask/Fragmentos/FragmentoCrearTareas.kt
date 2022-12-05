@@ -99,28 +99,20 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnAgregarMultimediaT.setOnClickListener {
-          var  fragment: Fragment
-          var bundle= Bundle()
             if (taskId != -1) {
+                var fragment: Fragment
+                var bundle = Bundle()
                 bundle.putInt("idN", taskId)
+                bundle.putInt("tipo", tipo)
+                fragment = FragmentoMultimedia.newInstance()
+                fragment.arguments = bundle
+                replaceFragment(fragment, false)
 
             } else {
-                launch {
-                    context?.let {
-                        val id = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerId()
-                        if (id == null) {
-                            bundle.putInt("idN", 1)
-                        } else {
-                            bundle.putInt("idN", id + 1)
-                        }
-
-                    }
-                }
+                Toast.makeText(requireContext(), "Primero guarda la tarea", Toast.LENGTH_SHORT)
+                    .show()
             }
-            bundle.putInt("tipo",tipo)
-            fragment = FragmentoMultimedia.newInstance()
-            fragment.arguments = bundle
-            replaceFragment(fragment, false)
+
         }
 
         btnAtrasT.setOnClickListener {
@@ -219,22 +211,20 @@ class FragmentoCrearTareas : FragmentoBase() {
             tareas.horaCumplirT = horaCumplir.text.toString()
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().insertarTarea(tareas)
-                cTituloT.setText("")
-                cDescT.setText("")
-                FechaCumplir.text = ""
-                horaCumplir.text = ""
-                requireActivity().supportFragmentManager.popBackStack()
             }
         }
+        Toast.makeText(requireContext(), "Tarea Guardada", Toast.LENGTH_SHORT).show()
+        requireActivity().supportFragmentManager.popBackStack()
+
     }
 
     private fun borrarTarea() {
 
         launch {
             context?.let {
-                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(taskId,tipo)
-                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(taskId,tipo)
-                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(taskId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(taskId, tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(taskId, tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(taskId, tipo)
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().borrarUnaTarea(taskId)
                 requireActivity().supportFragmentManager.popBackStack()
             }

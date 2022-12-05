@@ -1,6 +1,5 @@
 package com.example.notestask.Fragmentos
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -87,30 +86,19 @@ class FragmentoCrearNotas : FragmentoBase() {
         }
 
         btnAgregarFoto.setOnClickListener {
-            var fragment: Fragment
-            var bundle = Bundle()
             if (noteId != -1) {
+                var fragment: Fragment
+                var bundle = Bundle()
                 bundle.putInt("idN", noteId)
+                bundle.putInt("tipo", tipo)
+                fragment = FragmentoMultimedia.newInstance()
+                fragment.arguments = bundle
+                replaceFragment(fragment, false)
 
             } else {
-                launch {
-                    context?.let {
-                        val id = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
-                        if (id == null) {
-                            bundle.putInt("idN", 1)
-                        } else {
-                            bundle.putInt("idN", id + 1)
-                        }
-
-                    }
-                }
+                Toast.makeText(requireContext(), "Primero guarda la nota", Toast.LENGTH_SHORT)
+                    .show()
             }
-            bundle.putInt("tipo",tipo)
-            fragment = FragmentoMultimedia.newInstance()
-            fragment.arguments = bundle
-            replaceFragment(fragment, false)
-
-
         }
 
         btnAtras.setOnClickListener {
@@ -158,25 +146,20 @@ class FragmentoCrearNotas : FragmentoBase() {
             notes.descripcion = cDesc.text.toString()
             notes.fecha = currentDate
             context?.let {
-
                 BaseDatosNotas.getBaseDatos(it).dAONotas().insertarNota(notes)
-                val id = BaseDatosNotas.getBaseDatos(it).dAONotas().obtenerId()
-                cTitulo.setText("")
-                cDesc.setText("")
-                requireActivity().supportFragmentManager.popBackStack()
             }
-
         }
-
+        Toast.makeText(requireContext(), "Nota guardada", Toast.LENGTH_SHORT).show()
+        requireActivity().supportFragmentManager.popBackStack()
     }
 
     private fun borrarNota() {
 
         launch {
             context?.let {
-                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(noteId,tipo)
-                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(noteId,tipo)
-                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(noteId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(noteId, tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(noteId, tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(noteId, tipo)
                 BaseDatosNotas.getBaseDatos(it).dAONotas().borrarUnaNota(noteId)
                 requireActivity().supportFragmentManager.popBackStack()
             }
