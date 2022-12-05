@@ -32,6 +32,7 @@ class FragmentoCrearTareas : FragmentoBase() {
     private var taskId = -1
     private var tipo = -1
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -88,7 +89,14 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            programarNotificacion(cTituloT.text.toString())
+            recordatorio = !recordatorio
+            if (recordatorio) {
+                Toast.makeText(requireContext(), "Se guardara recordatorio", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(requireContext(), "No se guardara recordatorio", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
@@ -127,15 +135,15 @@ class FragmentoCrearTareas : FragmentoBase() {
 
     }
 
-
+    var recordatorio = false
     private fun mostrarCalendario() {
         val newFragment = Calendario { day, month, year -> onDateSelected(day, month, year) }
         activity?.let { newFragment.show(it.supportFragmentManager, "calendario") }
     }
 
     private fun onDateSelected(day: Int, month: Int, year: Int) {
-        val mescorregido = month + 1
-        FechaCumplir.text = "$day/$mescorregido/$year"
+        val mc = month + 1
+        FechaCumplir.text = "$day/$mc/$year"
         this.anio = year
         this.dia = day
         this.mes = month
@@ -174,6 +182,9 @@ class FragmentoCrearTareas : FragmentoBase() {
         calendar.set(Calendar.HOUR_OF_DAY, hora)
         calendar.set(Calendar.MINUTE, minutos)
         calendar.set(Calendar.SECOND, 0)
+        calendar.set((Calendar.MONTH), mes)
+        calendar.set(Calendar.YEAR, anio)
+        calendar.set(Calendar.DAY_OF_MONTH, dia)
         startAlarm(calendar, titulo)
     }
 
@@ -201,7 +212,9 @@ class FragmentoCrearTareas : FragmentoBase() {
 
 
     private fun guardarTarea() {
-
+        if (recordatorio) {
+            programarNotificacion(cTituloT.text.toString())
+        }
         launch {
             var tareas = Tareas()
             tareas.tituloT = cTituloT.text.toString()
