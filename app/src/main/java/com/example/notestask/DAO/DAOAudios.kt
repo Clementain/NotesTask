@@ -20,6 +20,4 @@ interface DAOAudios {
     @Update
     suspend fun actualizarAudio(audios: Audios)
 
-    @Query("SELECT * FROM Audios WHERE idAud= :idA")
-    suspend fun obtenerAudio(idA: Int): List<Audios>
 }

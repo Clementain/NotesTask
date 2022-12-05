@@ -232,6 +232,9 @@ class FragmentoCrearTareas : FragmentoBase() {
 
         launch {
             context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(taskId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(taskId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(taskId,tipo)
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().borrarUnaTarea(taskId)
                 requireActivity().supportFragmentManager.popBackStack()
             }

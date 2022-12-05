@@ -20,6 +20,4 @@ interface DAOVideos {
     @Update
     suspend fun actualizarVideos(videos: Videos)
 
-    @Query("SELECT * FROM videos WHERE idV= :idV")
-    suspend fun obtenerImagen(idV: Int): List<Videos>
 }

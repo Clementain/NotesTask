@@ -21,5 +21,6 @@
             android:layout_width="113dp"
             android:layout_height="162dp"
             app:srcCompat="@android:drawable/ic_btn_speak_now" />
+
     </androidx.cardview.widget.CardView>
 </LinearLayout>
