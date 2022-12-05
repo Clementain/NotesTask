@@ -5,8 +5,8 @@ import com.example.notestask.Entidades.Audios
 
 @Dao
 interface DAOAudios {
-    @Query("SELECT * FROM Audios WHERE idNota= :idN")
-    suspend fun obtenerAudios(idN: Int): List<Audios>
+    @Query("SELECT * FROM Audios WHERE idNota= :idN AND tipo=:t")
+    suspend fun obtenerAudios(idN: Int, t: Int): List<Audios>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertarAdios(audios: Audios)
@@ -14,8 +14,8 @@ interface DAOAudios {
     @Delete
     suspend fun borrarAudios(audios: Audios)
 
-    @Query("DELETE FROM Audios WHERE idNota=:idN")
-    suspend fun borrarUnAudio(idN: Int)
+    @Query("DELETE FROM Audios WHERE idNota=:idN AND tipo=:t")
+    suspend fun borrarUnAudio(idN: Int, t: Int)
 
     @Update
     suspend fun actualizarAudio(audios: Audios)

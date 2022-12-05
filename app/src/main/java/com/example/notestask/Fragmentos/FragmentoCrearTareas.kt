@@ -1,5 +1,6 @@
 package com.example.notestask.Fragmentos
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
@@ -28,11 +30,13 @@ class FragmentoCrearTareas : FragmentoBase() {
     private var hora = 0
     private var minutos = 0
     private var taskId = -1
+    private var tipo = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         taskId = requireArguments().getInt("taskId", -1)
+        tipo = 2
 
     }
 
@@ -51,6 +55,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -92,6 +97,30 @@ class FragmentoCrearTareas : FragmentoBase() {
                 Toast.makeText(requireContext(), "Primero guarda la tarea", Toast.LENGTH_SHORT)
                     .show()
             }
+        }
+        btnAgregarMultimediaT.setOnClickListener {
+          var  fragment: Fragment
+          var bundle= Bundle()
+            if (taskId != -1) {
+                bundle.putInt("idN", taskId)
+
+            } else {
+                launch {
+                    context?.let {
+                        val id = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerId()
+                        if (id == null) {
+                            bundle.putInt("idN", 1)
+                        } else {
+                            bundle.putInt("idN", id + 1)
+                        }
+
+                    }
+                }
+            }
+            bundle.putInt("tipo",tipo)
+            fragment = FragmentoMultimedia.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
         }
 
         btnAtrasT.setOnClickListener {
@@ -207,6 +236,18 @@ class FragmentoCrearTareas : FragmentoBase() {
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
+    }
+
+    fun replaceFragment(fragment: Fragment, itstransition: Boolean) {
+        val fragmentTransition = activity!!.supportFragmentManager.beginTransaction()
+        if (itstransition) {
+            fragmentTransition.setCustomAnimations(
+                android.R.anim.slide_out_right, android.R.anim.slide_in_left
+            )
+        }
+        fragmentTransition.replace(R.id.frame_layout, fragment)
+            .addToBackStack(fragment.javaClass.simpleName).commit()
+
     }
 
 }

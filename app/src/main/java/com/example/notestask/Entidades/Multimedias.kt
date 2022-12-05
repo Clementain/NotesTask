@@ -14,7 +14,7 @@ class Multimedias : Serializable {
     var idNFK: Int? = null
 
     @ColumnInfo(name = "tipo")
-    var tipo: String? = null
+    var tipo: Int? = null
 
     @ColumnInfo(name = "uri")
     var uri: String? = null

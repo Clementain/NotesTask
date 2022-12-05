@@ -21,6 +21,7 @@ import java.util.*
 
 class FrgamentoAgregarAudio : FragmentoBase() {
     private var idN = -1
+    private var tipo = -1
     private var auUri: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
@@ -30,6 +31,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idNA", -1)
+        tipo = requireArguments().getInt("tipo", -1)
 
     }
 
@@ -68,6 +70,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         launch {
             var aud = Audios()
             aud.uri = auUri
+            aud.tipo = tipo
             aud.idNFK = idN
             context?.let {
 
