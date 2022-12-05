@@ -18,13 +18,14 @@ import java.util.*
 class FragmentoCrearNotas : FragmentoBase() {
 
     var currentDate: String? = null
-    private var urImagen: Uri? = null
     private var noteId = -1
+    private var tipo = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         noteId = requireArguments().getInt("noteId", -1)
+        tipo = 1
 
 
     }
@@ -104,6 +105,7 @@ class FragmentoCrearNotas : FragmentoBase() {
                     }
                 }
             }
+            bundle.putInt("tipo",tipo)
             fragment = FragmentoMultimedia.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
@@ -172,8 +174,10 @@ class FragmentoCrearNotas : FragmentoBase() {
 
         launch {
             context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(noteId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(noteId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(noteId,tipo)
                 BaseDatosNotas.getBaseDatos(it).dAONotas().borrarUnaNota(noteId)
-                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(noteId)
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }

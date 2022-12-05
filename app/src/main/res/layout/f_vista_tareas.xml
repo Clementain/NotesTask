@@ -20,15 +20,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imgNoteT"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:visibility="gone"
-                app:riv_corner_radius_top_left="13dp"
-                app:riv_corner_radius_top_right="13dp" />
-
             <TextView
                 android:id="@+id/TituloT"
                 android:layout_width="match_parent"
@@ -75,6 +66,21 @@
 
             <TextView
                 android:id="@+id/fechaCumplir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:paddingStart="13dp"
+                android:paddingTop="2.6dp"
+                android:paddingBottom="6.5dp"
+                android:text="fechaCumplir"
+                android:textColor="@color/Gray"
+                android:textSize="11.7dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/HoraCumplir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"

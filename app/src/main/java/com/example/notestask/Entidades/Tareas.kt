@@ -20,6 +20,9 @@ class Tareas : Serializable {
     @ColumnInfo(name = "fechaCumplir")
     var fechaCumplirT: String? = null
 
+    @ColumnInfo(name = "horaCumplir")
+    var horaCumplirT: String? = null
+
     @ColumnInfo(name = "descripcion")
     var descripcionT: String? = null
 

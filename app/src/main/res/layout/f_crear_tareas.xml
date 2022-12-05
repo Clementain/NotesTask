@@ -79,10 +79,19 @@
         android:id="@+id/FechaCumplir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="13dp"
         android:layout_marginTop="20dp"
+        android:hint="Aqui va la fecha a cumplir"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cDescT" />
+
+    <TextView
+        android:id="@+id/horaCumplir"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Aqui va la hora a cumplir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/FechaCumplir" />
 
     <EditText
         android:id="@+id/cDescT"
@@ -118,12 +127,42 @@
 
     <ImageView
         android:id="@+id/btnFechaRecordar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="52dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="2dp"
         app:layout_constraintBottom_toTopOf="@+id/cTituloT"
         app:layout_constraintEnd_toStartOf="@+id/btnBorrarT"
+        app:srcCompat="@android:drawable/ic_popup_reminder" />
+
+    <ImageView
+        android:id="@+id/btnCalendario"
+        android:layout_width="39dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/cTituloT"
+        app:layout_constraintEnd_toStartOf="@+id/btnFechaRecordar"
         app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+
+    <ImageView
+        android:id="@+id/btnReloj"
+        android:layout_width="34dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/cTituloT"
+        app:layout_constraintEnd_toStartOf="@+id/btnCalendario"
+        app:srcCompat="@android:drawable/ic_lock_idle_alarm" />
+
+    <ImageView
+        android:id="@+id/btnAgregarMultimediaT"
+        android:layout_width="53dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

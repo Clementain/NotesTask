@@ -21,11 +21,13 @@ import java.util.*
 
 class FragmentoAgregarVideos : FragmentoBase() {
     private var idN = -1
+    private var tipo = -1
     private var viUri: Uri? = null
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idNV", -1)
+        tipo = requireArguments().getInt("tipo", -1)
     }
 
     override fun onCreateView(
@@ -84,7 +86,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
         launch {
             var vids = Videos()
             vids.uri = viUri.toString()
-            //  vids.tipo = tipoCN.text.toString()
+            vids.tipo = tipo
             vids.idNFK = idN
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOVideos().insertarVideos(vids)

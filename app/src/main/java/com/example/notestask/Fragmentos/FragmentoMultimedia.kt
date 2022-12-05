@@ -10,25 +10,21 @@ import com.example.notestask.Adaptador.AdaptadorAudios
 import com.example.notestask.Adaptador.AdaptadorImagenes
 import com.example.notestask.Adaptador.AdaptadorVideos
 import com.example.notestask.BaseDatos.BaseDatosNotas
-import com.example.notestask.Entidades.Audios
-import com.example.notestask.Entidades.Multimedias
-import com.example.notestask.Entidades.Videos
 import com.example.notestask.R
 import kotlinx.android.synthetic.main.fragmento_multimedia.*
 import kotlinx.coroutines.launch
 
 class FragmentoMultimedia : FragmentoBase() {
-    var arrlistImagenes = ArrayList<Multimedias>()
-    var arrlistVideos = ArrayList<Videos>()
-    var arraylistAudio = ArrayList<Audios>()
     var adaptadorimagen: AdaptadorImagenes = AdaptadorImagenes()
     var adaptadorvideo: AdaptadorVideos = AdaptadorVideos()
     var adaptadoraudio: AdaptadorAudios = AdaptadorAudios()
 
     private var idN = -1
+    private var tipo = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idN", -1)
+        tipo = requireArguments().getInt("tipo", -1)
         arguments?.let {}
     }
 
@@ -61,19 +57,17 @@ class FragmentoMultimedia : FragmentoBase() {
 
         launch {
             context?.let {
-                var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerMultimedias(idN)
+                var imgs =
+                    BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerMultimedias(idN, tipo)
                 adaptadorimagen.setData(imgs)
-                arrlistImagenes = imgs as ArrayList<Multimedias>
                 rvMultimedia.adapter = adaptadorimagen
 
-                var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenerVideos(idN)
+                var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenerVideos(idN, tipo)
                 adaptadorvideo.setData(vids)
-                arrlistVideos = vids as ArrayList<Videos>
                 rvVideos.adapter = adaptadorvideo
 
-                var auds = BaseDatosNotas.getBaseDatos(it).dAOAudios().obtenerAudios(idN)
+                var auds = BaseDatosNotas.getBaseDatos(it).dAOAudios().obtenerAudios(idN, tipo)
                 adaptadoraudio.setData(auds)
-                arraylistAudio = auds as ArrayList<Audios>
                 rvAudios.adapter = adaptadoraudio
             }
         }
@@ -81,6 +75,7 @@ class FragmentoMultimedia : FragmentoBase() {
             var fragment: Fragment
             var bundle = Bundle()
             bundle.putInt("idN", idN)
+            bundle.putInt("tipo", tipo)
             fragment = FragmentoAgregarImagenes.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
@@ -90,6 +85,7 @@ class FragmentoMultimedia : FragmentoBase() {
             var fragment: Fragment
             var bundle = Bundle()
             bundle.putInt("idNV", idN)
+            bundle.putInt("tipo", tipo)
             fragment = FragmentoAgregarVideos.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
@@ -98,9 +94,13 @@ class FragmentoMultimedia : FragmentoBase() {
             var fragment: Fragment
             var bundle = Bundle()
             bundle.putInt("idNA", idN)
+            bundle.putInt("tipo", tipo)
             fragment = FrgamentoAgregarAudio.newInstance()
             fragment.arguments = bundle
             replaceFragment(fragment, false)
+        }
+        btnAtrasFGM.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 

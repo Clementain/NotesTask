@@ -1,5 +1,6 @@
 package com.example.notestask.Fragmentos
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -21,6 +22,7 @@ import java.util.*
 
 class FrgamentoAgregarAudio : FragmentoBase() {
     private var idN = -1
+    private var tipo = -1
     private var auUri: String = ""
     private var recorder: MediaRecorder? = null
     private var player: MediaPlayer? = null
@@ -30,6 +32,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idNA", -1)
+        tipo = requireArguments().getInt("tipo", -1)
 
     }
 
@@ -68,6 +71,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         launch {
             var aud = Audios()
             aud.uri = auUri
+            aud.tipo = tipo
             aud.idNFK = idN
             context?.let {
 
@@ -110,15 +114,18 @@ class FrgamentoAgregarAudio : FragmentoBase() {
         stopRecording()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun stopRecording() {
         recorder?.apply {
             stop()
             release()
         }
         recorder = null
+        txtStart.text="Presiona el boton para iniciar la grabación"
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun iniciarGrabacion() {
         recorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -134,7 +141,7 @@ class FrgamentoAgregarAudio : FragmentoBase() {
             }
             start()
         }
-
+        txtStart.text="Presiona el boton para detener la grabación"
     }
 
     @Throws(IOException::class)

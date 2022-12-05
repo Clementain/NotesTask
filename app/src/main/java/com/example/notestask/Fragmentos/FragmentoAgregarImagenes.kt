@@ -21,12 +21,14 @@ import java.util.*
 
 class FragmentoAgregarImagenes : FragmentoBase() {
     private var idN = -1
+    private var tipo = -1
     private var urImagen: Uri? = null
     private val SELECT_ACTIVITY = 50
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         idN = requireArguments().getInt("idN", -1)
+        tipo = requireArguments().getInt("tipo", -1)
     }
 
     override fun onCreateView(
@@ -95,7 +97,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
         launch {
             var imgs = Multimedias()
             imgs.uri = urImagen.toString()
-            imgs.tipo = tipoCN.text.toString()
+            imgs.tipo = tipo
             imgs.idNFK = idN
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOMultimedia().insertarMultimedia(imgs)

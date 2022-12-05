@@ -1,16 +1,18 @@
 package com.example.notestask.Fragmentos
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.Context.ALARM_SERVICE
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.notestask.Alarmas.AlarmaReceiver
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
 import com.example.notestask.BaseDatos.BaseDatosNotas
 import com.example.notestask.Entidades.Tareas
 import com.example.notestask.R
@@ -22,12 +24,19 @@ import java.util.*
 class FragmentoCrearTareas : FragmentoBase() {
 
     var currentDate: String? = null
+    private var dia = 0
+    private var mes = 0
+    private var anio = 0
+    private var hora = 0
+    private var minutos = 0
     private var taskId = -1
+    private var tipo = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         taskId = requireArguments().getInt("taskId", -1)
+        tipo = 2
 
     }
 
@@ -46,6 +55,7 @@ class FragmentoCrearTareas : FragmentoBase() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,14 +67,14 @@ class FragmentoCrearTareas : FragmentoBase() {
                     var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
                     cTituloT.setText(tareas.tituloT)
                     cDescT.setText(tareas.descripcionT)
-                    // fechaCumplir.setText(tareas.fechaCumplirT)
-
+                    FechaCumplir.text = tareas.fechaCumplirT
+                    horaCumplir.text = tareas.horaCumplirT
                 }
             }
         }
 
 
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm")
 
         currentDate = sdf.format(Date())
 
@@ -78,17 +88,7 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            alarmMgr = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
-            alarmIntent = Intent(
-                requireActivity().applicationContext, AlarmaReceiver::class.java
-            ).let { intent ->
-                PendingIntent.getBroadcast(requireActivity().applicationContext, 1001, intent, 0)
-            }
-            alarmMgr?.set(
-                AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + 5 * 1000,
-                alarmIntent
-            )
+            programarNotificacion(cTituloT.text.toString())
         }
         btnBorrarT.setOnClickListener {
             if (taskId != -1) {
@@ -98,15 +98,93 @@ class FragmentoCrearTareas : FragmentoBase() {
                     .show()
             }
         }
+        btnAgregarMultimediaT.setOnClickListener {
+          var  fragment: Fragment
+          var bundle= Bundle()
+            if (taskId != -1) {
+                bundle.putInt("idN", taskId)
+
+            } else {
+                launch {
+                    context?.let {
+                        val id = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerId()
+                        if (id == null) {
+                            bundle.putInt("idN", 1)
+                        } else {
+                            bundle.putInt("idN", id + 1)
+                        }
+
+                    }
+                }
+            }
+            bundle.putInt("tipo",tipo)
+            fragment = FragmentoMultimedia.newInstance()
+            fragment.arguments = bundle
+            replaceFragment(fragment, false)
+        }
 
         btnAtrasT.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
+        btnCalendario.setOnClickListener {
+            mostrarCalendario()
+        }
+        btnReloj.setOnClickListener {
+            mostrarReloj()
+        }
 
     }
 
-    private var alarmMgr: AlarmManager? = null
-    private lateinit var alarmIntent: PendingIntent
+
+    private fun mostrarCalendario() {
+        val newFragment = Calendario { day, month, year -> onDateSelected(day, month, year) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "calendario") }
+    }
+
+    private fun onDateSelected(day: Int, month: Int, year: Int) {
+        val mescorregido = month + 1
+        FechaCumplir.text = "$day/$mescorregido/$year"
+        this.anio = year
+        this.dia = day
+        this.mes = month
+
+    }
+
+    private fun mostrarReloj() {
+        val newFragment = Reloj { hour, minute -> onTimeSelected(hour, minute) }
+        activity?.let { newFragment.show(it.supportFragmentManager, "reloj") }
+    }
+
+    private fun onTimeSelected(hour: Int, minute: Int) {
+        horaCumplir.text = "$hour:$minute"
+        this.hora = hour
+        this.minutos = minute
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun programarNotificacion(titulo: String) {
+        getTime(titulo)
+    }
+
+    private fun startAlarm(calendar: Calendar, titulo: String) {
+        val alarmManager = activity?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmaReceiver::class.java)
+        val message = "Tienes esta tarea pendiente"
+        intent.putExtra(tituloExtra2, titulo)
+        intent.putExtra(mensajeExtra2, message)
+        val pendingIntent = PendingIntent.getBroadcast(context, notificationID, intent, 0)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+    }
+
+    private fun getTime(titulo: String) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hora)
+        calendar.set(Calendar.MINUTE, minutos)
+        calendar.set(Calendar.SECOND, 0)
+        startAlarm(calendar, titulo)
+    }
+
     private fun actualizarTarea() {
         launch {
 
@@ -116,16 +194,19 @@ class FragmentoCrearTareas : FragmentoBase() {
                 tareas.tituloT = cTituloT.text.toString()
                 tareas.descripcionT = cDescT.text.toString()
                 tareas.fechaT = currentDate
-                //   tareas.fechaCumplirT=fechaCumplir.text.toString()
+                tareas.fechaCumplirT = FechaCumplir.text.toString()
+                tareas.horaCumplirT = horaCumplir.text.toString()
 
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().actualizarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
-                //             fechaCumplir.text = ""
+                FechaCumplir.text = ""
+                horaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
+
 
     private fun guardarTarea() {
 
@@ -134,11 +215,14 @@ class FragmentoCrearTareas : FragmentoBase() {
             tareas.tituloT = cTituloT.text.toString()
             tareas.descripcionT = cDescT.text.toString()
             tareas.fechaT = currentDate
-            // tareas.fechaCumplirT=fechaCumplir.text.toString()
+            tareas.fechaCumplirT = FechaCumplir.text.toString()
+            tareas.horaCumplirT = horaCumplir.text.toString()
             context?.let {
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().insertarTarea(tareas)
                 cTituloT.setText("")
                 cDescT.setText("")
+                FechaCumplir.text = ""
+                horaCumplir.text = ""
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
@@ -148,12 +232,26 @@ class FragmentoCrearTareas : FragmentoBase() {
 
         launch {
             context?.let {
+                BaseDatosNotas.getBaseDatos(it).dAOMultimedia().borrarUnaMultimedia(taskId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOVideos().borrarUnVideo(taskId,tipo)
+                BaseDatosNotas.getBaseDatos(it).dAOAudios().borrarUnAudio(taskId,tipo)
                 BaseDatosNotas.getBaseDatos(it).dAOTareas().borrarUnaTarea(taskId)
                 requireActivity().supportFragmentManager.popBackStack()
             }
         }
     }
 
+    fun replaceFragment(fragment: Fragment, itstransition: Boolean) {
+        val fragmentTransition = activity!!.supportFragmentManager.beginTransaction()
+        if (itstransition) {
+            fragmentTransition.setCustomAnimations(
+                android.R.anim.slide_out_right, android.R.anim.slide_in_left
+            )
+        }
+        fragmentTransition.replace(R.id.frame_layout, fragment)
+            .addToBackStack(fragment.javaClass.simpleName).commit()
+
+    }
 
 }
 
