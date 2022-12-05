@@ -89,13 +89,23 @@ class FragmentoCrearTareas : FragmentoBase() {
             }
         }
         btnFechaRecordar.setOnClickListener {
-            recordatorio = !recordatorio
-            if (recordatorio) {
-                Toast.makeText(requireContext(), "Se guardara recordatorio", Toast.LENGTH_SHORT)
-                    .show()
+
+            if (!FechaCumplir.text.equals("") || !horaCumplir.text.equals("")) {
+                recordatorio = !recordatorio
+                if (recordatorio) {
+                    Toast.makeText(requireContext(), "Se guardara recordatorio", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    Toast.makeText(
+                        requireContext(), "No se guardara recordatorio", Toast.LENGTH_SHORT
+                    ).show()
+                }
             } else {
-                Toast.makeText(requireContext(), "No se guardara recordatorio", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    requireContext(),
+                    "Asigna una fecha y hora para cumplir la actividad",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
         btnBorrarT.setOnClickListener {
@@ -188,7 +198,9 @@ class FragmentoCrearTareas : FragmentoBase() {
 
     private fun actualizarTarea() {
         launch {
-
+            if (recordatorio) {
+                programarNotificacion(cTituloT.text.toString())
+            }
             context?.let {
                 var tareas = BaseDatosNotas.getBaseDatos(it).dAOTareas().obtenerTarea(taskId)
 
