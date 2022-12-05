@@ -23,7 +23,6 @@ class FragmentoAgregarImagenes : FragmentoBase() {
     private var idN = -1
     private var tipo = -1
     private var urImagen: Uri? = null
-    private val SELECT_ACTIVITY = 50
     private val TAKE_ACTIVITY = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,20 +48,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btnAgregarFotoCN.setOnClickListener {
 
-            Intent(
-                Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI
-            ).also { pickPictureIntent ->
-                pickPictureIntent.resolveActivity(requireActivity().packageManager).also {
-
-
-                    startActivityForResult(pickPictureIntent, SELECT_ACTIVITY)
-
-                }
-            }
-
-        }
 
         btnAgregarFotoCamaraCN.setOnClickListener {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -130,10 +116,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == SELECT_ACTIVITY && resultCode == Activity.RESULT_OK) {
-            urImagen = data!!.data
-            mostrarFotoCN.setImageURI(urImagen)
-        } else if (requestCode == TAKE_ACTIVITY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == TAKE_ACTIVITY && resultCode == Activity.RESULT_OK) {
             mostrarFotoCN.setImageURI(urImagen)
         }
     }
