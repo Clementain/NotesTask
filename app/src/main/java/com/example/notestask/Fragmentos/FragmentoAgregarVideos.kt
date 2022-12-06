@@ -56,6 +56,7 @@ class FragmentoAgregarVideos : FragmentoBase() {
                 context?.let {
                     var vids = BaseDatosNotas.getBaseDatos(it).dAOVideos().obtenervideo(vId)
                     mostrarVideoCN.setVideoURI(Uri.parse(vids.uri))
+                    viUri = Uri.parse(vids.uri)
                 }
             }
         }

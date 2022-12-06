@@ -56,6 +56,7 @@ class FragmentoAgregarImagenes : FragmentoBase() {
                 context?.let {
                     var imgs = BaseDatosNotas.getBaseDatos(it).dAOMultimedia().obtenerUnaImagen(mId)
                     mostrarFotoCN.setImageURI(Uri.parse(imgs.uri))
+                    urImagen = Uri.parse(imgs.uri)
                 }
             }
         }
