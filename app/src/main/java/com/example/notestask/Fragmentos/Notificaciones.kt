@@ -11,6 +11,7 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.example.notestask.MainActivity
 import com.example.notestask.R
 
 
@@ -44,7 +45,7 @@ class Notificaciones(base: Context) : ContextWrapper(base) {
     }
 
     fun getNotificationBuilder(titulo: String): NotificationCompat.Builder {
-        val intent = Intent(this, FragmentoCrearTareas::class.java).apply {
+        val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, notID, intent, 0)
