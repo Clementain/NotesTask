@@ -18,7 +18,7 @@ class AlarmaReceiver : BroadcastReceiver() {
     }
 
     private fun datos(info: String) {
-        val infor = info.split(" ")
-        this.titulo = infor[0]
+
+        this.titulo = info
     }
 }
